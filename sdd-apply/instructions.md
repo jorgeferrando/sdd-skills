@@ -34,7 +34,7 @@ If missing:
 ⚠️  openspec/steering/conventions.md not found.
 
 Run /sdd-init first to set up your project context.
-This ensures Claude has the conventions and rules needed to implement correctly.
+This ensures the AI assistant has the conventions and rules needed to implement correctly.
 ```
 **STOP** — do not proceed without conventions.md.
 
@@ -98,7 +98,7 @@ git add {specific file}
 git commit -m "$(cat <<'EOF'
 [{change-name}] {Description in English, imperative mood}
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: AI Assistant <noreply@sdd-skills.dev>
 EOF
 )"
 ```

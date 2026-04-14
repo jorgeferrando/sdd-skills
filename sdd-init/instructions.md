@@ -22,9 +22,7 @@ Safe to re-run: if steering already exists, shows current state instead of re-ru
 
 Check whether the core SDD skills are installed:
 
-```bash
-ls ~/.claude/skills/sdd-apply/ 2>/dev/null && echo "installed" || echo "missing"
-```
+Check if SDD skill files are accessible in the current environment.
 
 If missing:
 ```
@@ -89,8 +87,8 @@ Present questions one group at a time. Wait for answers before proceeding.
 ### Principles
 - Assume the user has no technical knowledge
 - For each decision with multiple valid options: show trade-offs in plain language
-- When Claude has high confidence for the given context: recommend explicitly with a one-line justification
-- The user can always answer "you decide" — Claude will choose and explain
+- When the AI has high confidence for the given context: recommend explicitly with a one-line justification
+- The user can always answer "you decide" — the AI will choose and explain
 
 ---
 
@@ -191,7 +189,7 @@ If user says "you decide", recommend based on stack and team size:
 **E2. TDD?**
 - Yes — write tests before code *(slower start, fewer regressions)*
 - No — write tests after *(faster to start, discipline required)*
-- Claude decides per task *(recommended: TDD for critical logic, tests-after for UI)*
+- AI decides per task *(recommended: TDD for critical logic, tests-after for UI)*
 
 **E3. Commit format?**
 - Conventional Commits (`feat: add user auth`) *(tooling compatible, changelog-friendly)*
@@ -336,8 +334,8 @@ description: Project context for {project name}. Load at session start when work
 
 ## Living rules
 
-When the user corrects a decision Claude made during implementation:
-- Claude asks: "Want me to save this as a rule in project-rules.md for the future?"
+When the user corrects a decision the AI made during implementation:
+- The AI asks: "Want me to save this as a rule in project-rules.md for the future?"
 - On confirmation (or explicit "remember this"): add to project-rules.md in RFC 2119 format
 - On second correction of the same thing: save without asking
 
@@ -349,7 +347,7 @@ See `project-rules.md` for accumulated rules.
 # Project Rules: {project}
 
 > Granular implementation rules that grow as the project evolves.
-> Updated when the user corrects Claude's decisions.
+> Updated when the user corrects AI decisions.
 > Read by /sdd-apply and /sdd-audit alongside conventions.md.
 
 ## Style
@@ -426,12 +424,12 @@ Next steps:
 
 ## Living rules — how project-rules.md grows
 
-During any session working on this project, when the user corrects a decision Claude made:
+During any session working on this project, when the user corrects a decision the AI made:
 
 **Explicit correction** ("always use X", "from now on Y", "remember this"):
 → Add rule to `project-rules.md` immediately, confirm: "Saved: MUST use X — {reason}"
 
-**Implicit correction** (user overrides something Claude chose):
+**Implicit correction** (user overrides something the AI chose):
 → Ask: "Want me to save this as a rule for future sessions? (project-rules.md)"
 → On yes: add rule. On no: apply only in this session.
 → On second implicit correction of the same pattern: save without asking.

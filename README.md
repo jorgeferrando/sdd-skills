@@ -1,6 +1,8 @@
 # SDD Skills
 
-Skills for [Claude Code](https://claude.ai/code) that implement the **Spec-Driven Development (SDD)** workflow. Each skill is a self-contained set of instructions that guides Claude through a specific phase of the development cycle.
+Skills for AI coding assistants that implement the **Spec-Driven Development (SDD)** workflow. Each skill is a self-contained set of instructions that guides the AI through a specific phase of the development cycle.
+
+Works with **Claude Code**, **Cursor**, **Codex (OpenAI)**, and **GitHub Copilot**.
 
 SDD is a methodology where every code change starts with a **specification** — not code. The workflow ensures that what you build matches what you intended, with full traceability from problem statement to implementation.
 
@@ -9,14 +11,14 @@ SDD is a methodology where every code change starts with a **specification** —
 ```
 You describe what you want
         |
-   Claude follows the SDD workflow
+   AI follows the SDD workflow
         |
    spec -> design -> tasks -> code -> verify
         |
    Every decision is documented in openspec/
 ```
 
-Skills are **project-agnostic**. They work with any language, framework, or stack. Project-specific knowledge lives in `openspec/steering/` files generated during setup — skills read those files to adapt their behavior.
+Skills are **project-agnostic** and **LLM-agnostic**. They work with any language, framework, or stack. Project-specific knowledge lives in `openspec/steering/` files generated during setup — skills read those files to adapt their behavior.
 
 ## Install
 
@@ -26,16 +28,24 @@ Skills are **project-agnostic**. They work with any language, framework, or stac
 curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/install-skills.sh | bash
 ```
 
+The installer auto-detects your AI tool, or you can specify it:
+
+```bash
+./install-skills.sh --claude    # Claude Code
+./install-skills.sh --cursor    # Cursor
+./install-skills.sh --codex     # Codex (OpenAI)
+./install-skills.sh --copilot   # GitHub Copilot
+```
+
 ### Manual
 
 ```bash
 git clone https://github.com/jorgeferrando/sdd-skills
 cd sdd-skills
-./install-skills.sh --global    # ~/.claude/skills/ (all projects)
-./install-skills.sh --local     # .claude/skills/ (current project only)
+./install-skills.sh
 ```
 
-After installing, restart Claude Code. All `/sdd-*` commands become available.
+After installing, restart your editor. All `/sdd-*` commands become available.
 
 ## Quick start
 
@@ -569,7 +579,7 @@ Rules use RFC 2119 format: `**MUST** use X — reason from correction context`
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) (CLI, desktop app, or IDE extension)
+- An AI coding assistant: [Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), [Codex](https://openai.com/codex), or [GitHub Copilot](https://github.com/features/copilot)
 - Git
 
 No other dependencies. Skills work with any language and framework.
