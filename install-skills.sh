@@ -92,7 +92,13 @@ if [[ -f "$SDD_CLAUDE" ]]; then
                 ;;
             3)
                 cp "$SDD_CLAUDE" "$CLAUDE_DIR/CLAUDE.sdd.md"
-                echo "  ✓     CLAUDE.sdd.md created (CLAUDE.md unchanged)"
+                # Add a reference in CLAUDE.md so Claude loads it
+                if ! grep -q "CLAUDE.sdd.md" "$TARGET_CLAUDE" 2>/dev/null; then
+                    printf "\n\n<!-- SDD workflow context -->\nSee [CLAUDE.sdd.md](CLAUDE.sdd.md) for SDD (Spec-Driven Development) workflow rules.\n" >> "$TARGET_CLAUDE"
+                    echo "  ✓     CLAUDE.sdd.md created + referenced in CLAUDE.md"
+                else
+                    echo "  ✓     CLAUDE.sdd.md created (already referenced in CLAUDE.md)"
+                fi
                 ;;
             *)
                 echo "  skip  CLAUDE.md"
