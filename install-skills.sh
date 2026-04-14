@@ -50,11 +50,55 @@ for skill_dir in "$SKILLS_SRC"/sdd-*/; do
     fi
 done
 
-# Install CLAUDE.sdd.md alongside the skills
+# Install CLAUDE.md alongside the skills
 CLAUDE_DIR="$(dirname "$DEST")"
-if [[ -f "$SKILLS_SRC/CLAUDE.sdd.md" ]]; then
-    cp "$SKILLS_SRC/CLAUDE.sdd.md" "$CLAUDE_DIR/CLAUDE.sdd.md"
-    echo "  ✓     CLAUDE.sdd.md → $CLAUDE_DIR/"
+SDD_CLAUDE="$SKILLS_SRC/CLAUDE.sdd.md"
+TARGET_CLAUDE="$CLAUDE_DIR/CLAUDE.md"
+
+if [[ -f "$SDD_CLAUDE" ]]; then
+    echo ""
+    if [[ ! -f "$TARGET_CLAUDE" ]]; then
+        # No CLAUDE.md exists
+        echo "  CLAUDE.md not found at $CLAUDE_DIR/"
+        echo "    [1] Create CLAUDE.md with SDD context (recommended)"
+        echo "    [2] Skip"
+        read -rp "  Choice [1/2]: " claude_choice
+        case "$claude_choice" in
+            1)
+                cp "$SDD_CLAUDE" "$TARGET_CLAUDE"
+                echo "  ✓     CLAUDE.md created"
+                ;;
+            *)
+                echo "  skip  CLAUDE.md"
+                ;;
+        esac
+    else
+        # CLAUDE.md already exists
+        echo "  CLAUDE.md already exists at $CLAUDE_DIR/"
+        echo "    [1] Overwrite with SDD context"
+        echo "    [2] Append SDD context at the end"
+        echo "    [3] Save as CLAUDE.sdd.md (keeps existing CLAUDE.md)"
+        echo "    [4] Skip"
+        read -rp "  Choice [1/2/3/4]: " claude_choice
+        case "$claude_choice" in
+            1)
+                cp "$SDD_CLAUDE" "$TARGET_CLAUDE"
+                echo "  ✓     CLAUDE.md overwritten"
+                ;;
+            2)
+                printf "\n\n" >> "$TARGET_CLAUDE"
+                cat "$SDD_CLAUDE" >> "$TARGET_CLAUDE"
+                echo "  ✓     SDD context appended to CLAUDE.md"
+                ;;
+            3)
+                cp "$SDD_CLAUDE" "$CLAUDE_DIR/CLAUDE.sdd.md"
+                echo "  ✓     CLAUDE.sdd.md created (CLAUDE.md unchanged)"
+                ;;
+            *)
+                echo "  skip  CLAUDE.md"
+                ;;
+        esac
+    fi
 fi
 
 echo ""
