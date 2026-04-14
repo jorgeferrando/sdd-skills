@@ -31,8 +31,8 @@ If missing:
 ⚠️  SDD skills not installed.
 
 To install, run one of:
-  bash scripts/install-skills.sh --global   # from the sdd-tui repo
-  curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-tui/main/scripts/install-skills.sh | bash
+  bash install-skills.sh --global   # from the sdd-skills repo
+  curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/install-skills.sh | bash
 
 Continuing with openspec/ setup — you can install skills afterwards.
 ```
