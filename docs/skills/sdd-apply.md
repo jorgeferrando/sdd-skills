@@ -14,13 +14,13 @@
 
 - `tasks.md` approved with task list
 - Correct git branch created
-- `openspec/steering/conventions.md` **must exist** — Claude refuses to start without it
+- `openspec/steering/conventions.md` **must exist** — the AI refuses to start without it
 
 ## How it works
 
 ### Step 0: Load steering
 
-Before writing any code, Claude reads:
+Before writing any code, the AI reads:
 
 1. `openspec/steering/project-skill.md` (index)
 2. `openspec/steering/conventions.md` (rules)
@@ -50,7 +50,7 @@ If something comes up that's not in `tasks.md`:
 
 ### Unexpected situations
 
-Claude does NOT make unilateral decisions. If something unexpected appears:
+The AI does NOT make unilateral decisions. If something unexpected appears:
 
 ```
 During T03 I found {situation}.
@@ -65,7 +65,7 @@ The tasks don't cover this case. How should I proceed?
 ```
 [{change-name}] {Description in English, imperative mood}
 
-Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: AI Assistant <noreply@sdd-skills.dev>
 ```
 
 - Max 70 characters on first line

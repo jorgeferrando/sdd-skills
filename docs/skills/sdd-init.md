@@ -30,7 +30,7 @@ Safe to re-run. If steering already exists, shows current state and exits.
 | **D — Tools** | Detected MCPs (Context7, Jira, GitHub) |
 | **E — Patterns** | Architecture style, TDD, commit format |
 
-Each question shows trade-offs with justifications. The user can answer "you decide" — Claude chooses and explains.
+Each question shows trade-offs with justifications. The user can answer "you decide" — the AI chooses and explains.
 
 ### If the project has code (reduced questionnaire)
 

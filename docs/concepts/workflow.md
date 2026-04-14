@@ -34,7 +34,7 @@ graph TD
 
 **Skill:** `/sdd-explore` (or embedded in `/sdd-new`)
 
-Read-only analysis of the codebase. Claude reads existing code, identifies patterns, checks canonical specs, and builds context. No files are created or modified.
+Read-only analysis of the codebase. The AI reads existing code, identifies patterns, checks canonical specs, and builds context. No files are created or modified.
 
 ### 2. Propose
 
@@ -105,12 +105,12 @@ After archive, canonical specs reflect the current system state.
 | **Standard** | Complex changes, team review needed | `/sdd-new` then `/sdd-continue` repeatedly |
 | **Fast-forward** | Clear scope, straightforward | `/sdd-ff` then `/sdd-apply` |
 
-The fast-forward path generates all documentation in one pass (propose + spec + design + tasks). Use it when the change is simple enough that you trust Claude's judgment without reviewing each phase.
+The fast-forward path generates all documentation in one pass (propose + spec + design + tasks). Use it when the change is simple enough that you trust the AI's judgment without reviewing each phase.
 
 ## Principles
 
 1. **Specs before code** — define behavior, then implement
 2. **Atomic commits** — one task, one file, one commit
-3. **No unilateral decisions** — Claude asks when something unexpected comes up
+3. **No unilateral decisions** — the AI asks when something unexpected comes up
 4. **Living documentation** — specs are always current after archive
 5. **Project memory** — conventions and rules persist across sessions via steering

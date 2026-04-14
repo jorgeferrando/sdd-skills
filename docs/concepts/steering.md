@@ -4,7 +4,7 @@ Steering files are the **project-specific context** that makes SDD skills work c
 
 ## Why steering?
 
-Skills like `/sdd-apply` are generic — they work with any language or framework. But to write correct code, Claude needs to know:
+Skills like `/sdd-apply` are generic — they work with any language or framework. But to write correct code, the AI needs to know:
 
 - What testing framework to use
 - What architectural patterns to follow
@@ -40,12 +40,12 @@ This file is loaded by `/sdd-apply` before every implementation and by `/sdd-aud
 
 ### `project-rules.md` — Rules that grow with the project
 
-Starts empty. Grows when the user corrects Claude during implementation:
+Starts empty. Grows when the user corrects the AI during implementation:
 
 | Trigger | Behavior |
 |---------|----------|
 | User says "always use X" or "remember this" | Saved immediately |
-| User overrides Claude's choice | Claude asks "save as rule?" |
+| User overrides the AI's choice | The AI asks "save as rule?" |
 | Same correction happens twice | Saved automatically |
 
 ```markdown
@@ -151,7 +151,7 @@ Detects drift between documented conventions and the current codebase. Shows pro
 
 ### Automatic growth
 
-`project-rules.md` grows automatically during `/sdd-apply` sessions when Claude learns from corrections. No manual intervention needed.
+`project-rules.md` grows automatically during `/sdd-apply` sessions when the AI learns from corrections. No manual intervention needed.
 
 ### Manual edits
 

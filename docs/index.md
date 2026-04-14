@@ -1,8 +1,10 @@
 # SDD Skills
 
-**Spec-Driven Development skills for [Claude Code](https://claude.ai/code).**
+**Spec-Driven Development skills for AI coding assistants.**
 
-SDD is a methodology where every code change starts with a specification — not code. These skills guide Claude through a structured workflow that ensures what you build matches what you intended, with full traceability from problem statement to implementation.
+Works with [Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), [Codex](https://openai.com/codex), and [GitHub Copilot](https://github.com/features/copilot).
+
+SDD is a methodology where every code change starts with a specification — not code. These skills guide the AI through a structured workflow that ensures what you build matches what you intended, with full traceability from problem statement to implementation.
 
 ## Why SDD?
 
@@ -47,7 +49,7 @@ curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/insta
 
 | What | Where | Purpose |
 |------|-------|---------|
-| 16 skills | `~/.claude/skills/sdd-*/` | Process automation |
+| 16 skills | Installed per tool | Process automation |
 | Steering files | `openspec/steering/` | Project context |
 | Canonical specs | `openspec/specs/` | Living documentation |
 | Change artifacts | `openspec/changes/` | Traceability |

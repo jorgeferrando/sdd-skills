@@ -15,7 +15,7 @@ It asks about:
 - **Team** — size, quality level (MVP/production/OSS), CI/CD
 - **Patterns** — architecture style, TDD, commit format
 
-For each question with trade-offs, Claude shows options with justifications. You can always answer "you decide" and Claude will choose and explain.
+For each question with trade-offs, the AI shows options with justifications. You can always answer "you decide" and the AI chooses and explains.
 
 After the questionnaire, `/sdd-init` generates steering files in `openspec/steering/` that feed the entire workflow.
 
@@ -60,7 +60,7 @@ Use when you want to review each phase before proceeding:
 
 ### Fast-forward (clear scope)
 
-Use when the change is straightforward and you trust Claude's judgment:
+Use when the change is straightforward and you trust the AI's judgment:
 
 ```
 /sdd-ff "add /health endpoint"       # All docs in one pass
@@ -90,6 +90,6 @@ Check your code against project conventions:
 
 - **`/sdd-continue` is your friend** — when in doubt, just run it
 - **Review specs carefully** — they're the contract. Design and implementation flow from them
-- **Let `project-rules.md` grow** — correct Claude once, it remembers forever
+- **Let `project-rules.md` grow** — correct the AI once, it remembers forever
 - **Archive often** — it keeps canonical specs up to date
 - **Use `/sdd-ff` for small changes** — don't over-process simple tasks

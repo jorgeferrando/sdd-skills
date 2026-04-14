@@ -23,12 +23,12 @@ Runs four phases without pausing between them:
 4. **Design** — creates `design.md`
 5. **Tasks** — creates `tasks.md`
 
-If ambiguity is found at any point, Claude pauses to ask, then continues.
+If ambiguity is found at any point, the AI pauses to ask, then continues.
 
 ## When to use
 
 - The change is straightforward and well-understood
-- You trust Claude's judgment for intermediate phases
+- You trust the AI's judgment for intermediate phases
 - You want to move fast
 
 ## When NOT to use
