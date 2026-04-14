@@ -50,6 +50,13 @@ for skill_dir in "$SKILLS_SRC"/sdd-*/; do
     fi
 done
 
+# Install CLAUDE.sdd.md alongside the skills
+CLAUDE_DIR="$(dirname "$DEST")"
+if [[ -f "$SKILLS_SRC/CLAUDE.sdd.md" ]]; then
+    cp "$SKILLS_SRC/CLAUDE.sdd.md" "$CLAUDE_DIR/CLAUDE.sdd.md"
+    echo "  ✓     CLAUDE.sdd.md → $CLAUDE_DIR/"
+fi
+
 echo ""
 echo "Installed: $installed  Skipped: $skipped"
 echo "Destination: $DEST"
