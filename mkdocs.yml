@@ -1,0 +1,78 @@
+site_name: SDD Skills
+site_description: Spec-Driven Development skills for Claude Code
+site_url: https://jorgeferrando.github.io/sdd-skills
+repo_url: https://github.com/jorgeferrando/sdd-skills
+repo_name: jorgeferrando/sdd-skills
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - def_list
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Quick Start: getting-started.md
+    - Installation: installation.md
+  - Concepts:
+    - The SDD Workflow: concepts/workflow.md
+    - Openspec Directory: concepts/openspec.md
+    - Steering Files: concepts/steering.md
+  - Skills Reference:
+    - Setup:
+      - sdd-init: skills/sdd-init.md
+      - sdd-discover: skills/sdd-discover.md
+      - sdd-steer: skills/sdd-steer.md
+    - Change Lifecycle:
+      - sdd-new: skills/sdd-new.md
+      - sdd-explore: skills/sdd-explore.md
+      - sdd-propose: skills/sdd-propose.md
+      - sdd-spec: skills/sdd-spec.md
+      - sdd-design: skills/sdd-design.md
+      - sdd-tasks: skills/sdd-tasks.md
+      - sdd-apply: skills/sdd-apply.md
+      - sdd-verify: skills/sdd-verify.md
+      - sdd-archive: skills/sdd-archive.md
+    - Shortcuts:
+      - sdd-ff: skills/sdd-ff.md
+      - sdd-continue: skills/sdd-continue.md
+    - Utilities:
+      - sdd-audit: skills/sdd-audit.md
+      - sdd-docs: skills/sdd-docs.md
