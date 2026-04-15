@@ -1,0 +1,5 @@
+name: anti-overengineering
+description: Detects premature abstractions, unnecessary patterns, and speculative design. Advises all agents to keep code simple and proportional to the actual problem.
+applies_to: all
+files:
+  - conventions-simplicity.md → openspec/steering/conventions-simplicity.md

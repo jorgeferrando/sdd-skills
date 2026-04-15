@@ -40,12 +40,13 @@ Without a conventions baseline, audit has no reference.
 
 ## Step 2: Load ruleset
 
-Read both files as a unified ruleset:
+Read all steering files as a unified ruleset:
 
 1. Read `openspec/steering/conventions.md` (required)
 2. If `openspec/steering/project-rules.md` exists → read it too
+3. Read **all** other `.md` files in `openspec/steering/` — specialist advisors add domain-specific rules in the same RFC 2119 format
 
-Both files use RFC 2119 format. All rules are treated equally regardless of source.
+All rules are treated equally regardless of source file.
 
 **Note:** Rules in `project-rules.md` that duplicate linter coverage (e.g. quote style
 already enforced by ruff/eslint) should NOT generate audit violations — the audit is

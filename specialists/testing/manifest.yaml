@@ -1,0 +1,5 @@
+name: testing
+description: Expert in test design — proper test doubles, no redundant tests, behavior-focused assertions. Advises sdd-apply and sdd-verify to write tests that are maintainable and meaningful.
+applies_to: all
+files:
+  - conventions-testing.md → openspec/steering/conventions-testing.md

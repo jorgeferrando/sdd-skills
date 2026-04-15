@@ -47,6 +47,7 @@ This ensures the AI assistant has the conventions and rules needed to implement 
   - `openspec/steering/conventions.md`
   - `openspec/steering/project-rules.md` (if exists)
   - `openspec/steering/tech.md` (if exists)
+- Additionally, read **all** other `.md` files in `openspec/steering/` (specialist advisors, domain-specific conventions, etc.). These extend the base conventions with focused expertise.
 
 Apply all rules from these files throughout the implementation.
 

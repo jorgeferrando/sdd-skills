@@ -104,11 +104,24 @@ Each skill has a corresponding page in `docs/skills/sdd-{name}.md`. When modifyi
 
 Concept pages in `docs/concepts/` explain the workflow, openspec directory, and steering files. Update these if you change how the workflow operates.
 
+## Specialists
+
+Domain-specific advisors that inject conventions into the workflow. They are `.md` files installed to `openspec/steering/` and read automatically by sdd-apply, sdd-audit, and sdd-verify.
+
+Each specialist lives in `specialists/{name}/` with:
+- `manifest.yaml` — name, description, applies_to, files mapping
+- One or more `.md` files with RFC 2119 rules
+
+Install with `./install-specialist.sh <name>` from a project that has `openspec/steering/`.
+
+Adding a new specialist: create `specialists/{name}/manifest.yaml` + conventions file(s).
+
 ## Scripts
 
 - `install-skills.sh` — multi-tool installer. Clones from this repo when run via curl.
 - `sync-skills.sh` — copies `instructions.md` to `SKILL.md` in each skill directory.
 - `validate-skills.sh` — checks skill structure, frontmatter, sync status, plugin.json consistency, and docs pages. Runs in CI on every push/PR.
+- `install-specialist.sh` — installs specialist advisors into a project's `openspec/steering/`.
 - `sdd-env-scan.sh` — environment detection script used by `/sdd-init`. Outputs `category:name:value` lines.
 
 ## Making changes
