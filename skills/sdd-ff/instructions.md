@@ -1,6 +1,8 @@
 ---
 name: sdd-ff
 description: SDD Fast-Forward - Run propose + spec + design + tasks without pauses. For when the scope is clear and you want to generate all documentation in one pass. Usage - /sdd-ff "description" or /sdd-ff TICKET-123.
+requires: ["openspec/config.yaml"]
+produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/specs/*/spec.md", "openspec/changes/{change}/design.md", "openspec/changes/{change}/tasks.md"]
 ---
 
 # SDD Fast-Forward

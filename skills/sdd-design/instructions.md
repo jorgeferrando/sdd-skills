@@ -1,6 +1,8 @@
 ---
 name: sdd-design
 description: SDD Design - Technical design for the change. Translates the behavior spec into an implementation plan with files, classes, patterns, and dependencies. Usage - /sdd-design or as part of /sdd-ff.
+requires: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/specs/*/spec.md"]
+produces: ["openspec/changes/{change}/design.md"]
 ---
 
 # SDD Design

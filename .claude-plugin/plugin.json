@@ -1,6 +1,6 @@
 {
   "name": "sdd-skills",
-  "description": "Spec-Driven Development skills for AI coding assistants. 16 skills that guide the AI through a structured workflow: spec, design, tasks, implement, verify, archive. Works with any language, framework, or stack.",
+  "description": "Spec-Driven Development skills for AI coding assistants. 17 skills that guide the AI through a structured workflow: spec, design, tasks, implement, verify, archive. Works with any language, framework, or stack.",
   "version": "1.0.0",
   "author": {
     "name": "jorgeferrando"
@@ -31,6 +31,7 @@
     "./skills/sdd-continue",
     "./skills/sdd-steer",
     "./skills/sdd-audit",
-    "./skills/sdd-docs"
+    "./skills/sdd-docs",
+    "./skills/sdd-recall"
   ]
 }

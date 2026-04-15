@@ -1,6 +1,8 @@
 ---
 name: sdd-verify
 description: SDD Verify - Final validation before PR. Run tests, quality checks, and self-review checklist. Usage - /sdd-verify or /sdd-verify {change-name}.
+requires: ["openspec/changes/{change}/tasks.md"]
+produces: []
 ---
 
 # SDD Verify

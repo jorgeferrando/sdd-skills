@@ -1,6 +1,8 @@
 ---
 name: sdd-apply
 description: SDD Apply - Implement the change following tasks.md. One task = one file = one atomic commit. Usage - /sdd-apply or /sdd-apply {change-name} or /sdd-apply T03.
+requires: ["openspec/changes/{change}/tasks.md", "openspec/steering/conventions.md"]
+produces: []
 ---
 
 # SDD Apply

@@ -1,6 +1,8 @@
 ---
 name: sdd-continue
 description: SDD Continue - Detect the next pending phase and execute it. Equivalent to "what's next?". Usage - /sdd-continue or /sdd-continue {change-name}.
+requires: ["openspec/changes/"]
+produces: []
 ---
 
 # SDD Continue
@@ -82,6 +84,32 @@ Detected phase: DESIGN
 Change: {change-name}
 Running sdd-design (as agent — context stays clean)...
 ```
+
+## Custom skills (extension point)
+
+If `openspec/skills/` exists, scan it for custom skill files (`*.md` with YAML frontmatter). Custom skills extend the phase table in Step 2.
+
+Each custom skill file must have:
+```yaml
+---
+name: custom-skill-name
+description: What it does
+requires: ["openspec/changes/{change}/tasks.md"]  # when to trigger
+produces: ["openspec/changes/{change}/custom-output.md"]
+after: apply    # insert after this built-in phase
+mode: inline    # or agent
+---
+```
+
+**How custom phases work:**
+1. Read all `openspec/skills/*.md` files
+2. For each, check the `after` field to determine where it fits in the phase sequence
+3. Add it to the phase detection table: DONE when `produces` artifacts exist
+4. Execute using the `mode` field (inline or agent)
+
+Custom skills run **between** the built-in phase they follow and the next built-in phase. Multiple custom skills with the same `after` value run in alphabetical order.
+
+If a custom skill's `requires` artifacts don't exist yet, skip it (it's not ready).
 
 ## Notes
 

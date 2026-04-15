@@ -1,6 +1,8 @@
 ---
 name: sdd-init
 description: SDD Init - Bootstrap openspec/ with guided onboarding. Scans environment, asks questions about the project (with trade-offs), and generates openspec/steering/ artifacts that feed the entire SDD workflow. Entry point for new projects. Usage - /sdd-init.
+requires: []
+produces: ["openspec/config.yaml", "openspec/steering/product.md", "openspec/steering/tech.md", "openspec/steering/structure.md", "openspec/steering/conventions.md", "openspec/steering/environment.md", "openspec/steering/project-skill.md", "openspec/steering/project-rules.md"]
 ---
 
 # SDD Init

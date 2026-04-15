@@ -1,6 +1,8 @@
 ---
 name: sdd-discover
 description: SDD Discover - Analyze existing codebase and generate initial canonical specs in openspec/specs/ with Status inferred. Run once per project after sdd-init. Usage - /sdd-discover or /sdd-discover {domain}.
+requires: ["openspec/config.yaml"]
+produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md"]
 ---
 
 # SDD Discover

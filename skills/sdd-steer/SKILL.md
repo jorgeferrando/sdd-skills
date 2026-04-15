@@ -1,6 +1,8 @@
 ---
 name: sdd-steer
-description: SDD Steer - Generate and synchronize steering files in openspec/steering/. Bootstrap on first run, sync detects drift. Usage - /sdd-steer or /sdd-steer sync.
+description: SDD Steer - Generate and synchronize steering files in openspec/steering/. Bootstrap on first run, sync detects drift, report analyzes health. Usage - /sdd-steer or /sdd-steer sync or /sdd-steer report.
+requires: ["openspec/steering/"]
+produces: ["openspec/steering/conventions.md", "openspec/steering/project-rules.md", "openspec/steering/tech.md", "openspec/steering/structure.md", "openspec/steering/product.md"]
 ---
 
 # SDD Steer
@@ -13,6 +15,7 @@ description: SDD Steer - Generate and synchronize steering files in openspec/ste
 ```
 /sdd-steer          # Bootstrap: generate all files from scratch
 /sdd-steer sync     # Sync: detect drift and propose updates
+/sdd-steer report   # Report: analyze steering health and coverage
 ```
 
 ## Prerequisites
@@ -225,6 +228,47 @@ Apply these changes? (y/n/select)
 ```
 
 ---
+
+## Report mode (`/sdd-steer report`)
+
+Analyze the current state of steering files and produce a health report. Read-only — no files are modified.
+
+### What to analyze
+
+1. **`conventions.md`** — count rules by level (MUST/SHOULD/MAY) and by area (section headers)
+2. **`project-rules.md`** — count rules added by user correction vs. bootstrap
+3. **Archived changes** — scan `openspec/changes/archive/` to count how many changes were completed
+4. **Drift indicators** — check if `tech.md` references tools/versions that no longer match the project (e.g., package.json has different versions)
+
+### Output format
+
+```
+STEERING REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Conventions (conventions.md):
+  MUST:   12 rules across 4 areas
+  SHOULD: 6 rules across 3 areas
+  MAY:    2 rules
+
+Project rules (project-rules.md):
+  Total:  5 rules
+  Style:  2 | Tests: 1 | Architecture: 2
+
+History:
+  Archived changes: 8
+  Domains with canonical specs: 3
+
+Health:
+  ✓ conventions.md — up to date
+  ⚠ tech.md — Node version mismatch (file: 18, detected: 22)
+  ✓ structure.md — matches current layout
+  ✗ project-rules.md — empty sections (Style, Tests)
+
+Suggestions:
+  - Run /sdd-steer sync to update tech.md
+  - Consider adding rules to empty sections after next code review
+```
 
 ## Notes
 

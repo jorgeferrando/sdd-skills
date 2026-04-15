@@ -1,6 +1,8 @@
 ---
 name: sdd-tasks
 description: SDD Tasks - Break the design into atomic tasks. One task = one file = one commit. Usage - /sdd-tasks or as part of /sdd-ff.
+requires: ["openspec/changes/{change}/design.md"]
+produces: ["openspec/changes/{change}/tasks.md"]
 ---
 
 # SDD Tasks

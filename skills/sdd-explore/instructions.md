@@ -1,6 +1,8 @@
 ---
 name: sdd-explore
 description: SDD Explore - Read-only codebase exploration to understand context before proposing changes. Used as part of /sdd-new or /sdd-continue. Usage - /sdd-explore "what to look for".
+requires: ["openspec/config.yaml"]
+produces: ["openspec/changes/{change}/notes.md"]
 ---
 
 # SDD Explore

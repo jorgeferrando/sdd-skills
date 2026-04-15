@@ -58,6 +58,7 @@ sdd-continue = detects next phase and dispatches to the right skill
 sdd-steer = generates/updates openspec/steering/
 sdd-audit = checks code against conventions
 sdd-docs = generates MkDocs site from openspec/
+sdd-recall = searches archived specs and past decisions
 ```
 
 When editing a skill, check whether upstream or downstream skills reference the same artifacts or conventions.

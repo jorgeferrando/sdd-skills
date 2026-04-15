@@ -1,6 +1,8 @@
 ---
 name: sdd-propose
 description: SDD Propose - Create proposal.md for a new change. Analyzes input completeness, asks clarifying questions to fill gaps, then generates a complete proposal. Usage - /sdd-propose "description" or as part of /sdd-new.
+requires: ["openspec/config.yaml"]
+produces: ["openspec/changes/{change}/proposal.md"]
 ---
 
 # SDD Propose

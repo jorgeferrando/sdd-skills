@@ -1,6 +1,8 @@
 ---
 name: sdd-archive
 description: SDD Archive - Close the change cycle. Move the change to the archive and update canonical specs. Usage - /sdd-archive or /sdd-archive {change-name}.
+requires: ["openspec/changes/{change}/tasks.md", "openspec/changes/{change}/specs/*/spec.md"]
+produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md", "openspec/changes/archive/"]
 ---
 
 # SDD Archive

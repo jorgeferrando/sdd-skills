@@ -1,6 +1,8 @@
 ---
 name: sdd-spec
 description: SDD Spec - Create or update domain specs in openspec/. The spec describes system behavior, not implementation. Usage - /sdd-spec or as part of /sdd-ff.
+requires: ["openspec/changes/{change}/proposal.md"]
+produces: ["openspec/changes/{change}/specs/*/spec.md"]
 ---
 
 # SDD Spec

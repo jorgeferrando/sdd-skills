@@ -41,10 +41,10 @@ Lo que separa SDD de "un prompt largo".
 
 | # | Tarea | Entregable | Fecha objetivo |
 |---|-------|-----------|----------------|
-| 8 | Output contracts en frontmatter | `requires`/`produces` en los 16 skills | 2026-05-26 |
-| 9 | Extension point en `sdd-continue` | Lectura de skills custom desde `openspec/skills/`, docs actualizados | 2026-06-02 |
-| 10 | `sdd-recall` | `skills/sdd-recall/instructions.md`, docs, entry en plugin.json | 2026-06-09 |
-| 11 | `sdd-steer --report` | Modo `--report` en sdd-steer, docs actualizados | 2026-06-16 |
+| 8 | ~~Output contracts en frontmatter~~ | `requires`/`produces` en los 17 skills | ~~2026-05-26~~ 2026-04-15 |
+| 9 | ~~Extension point en `sdd-continue`~~ | Custom skills via `openspec/skills/*.md` con `after`/`mode` fields | ~~2026-06-02~~ 2026-04-15 |
+| 10 | ~~`sdd-recall`~~ | Skill #17: search archived specs and past decisions | ~~2026-06-09~~ 2026-04-15 |
+| 11 | ~~`sdd-steer --report`~~ | Modo `--report` con health analysis y drift detection | ~~2026-06-16~~ 2026-04-15 |
 
 **Criterio de salida:** Un equipo puede extender el workflow con skills propios, y las specs archivadas son recuperables.
 
@@ -94,3 +94,7 @@ Cuando haya usuarios reales que validen el diseno.
 - [x] 2026-04-15 — Installer mejorado: seleccion de skills, --dry-run, colores ANSI
 - [x] 2026-04-15 — sdd-init --quick mode (resuelto como friction fix F2)
 - [x] 2026-04-15 — install-skills.sh: se mantiene como fallback, SkillKit es primario para multi-agent
+- [x] 2026-04-15 — Output contracts (`requires`/`produces`) en los 17 skills
+- [x] 2026-04-15 — Extension point en sdd-continue para custom skills (`openspec/skills/`)
+- [x] 2026-04-15 — sdd-recall: skill #17 para buscar specs archivadas y decisiones previas
+- [x] 2026-04-15 — sdd-steer --report: analisis de salud de steering files

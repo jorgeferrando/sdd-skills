@@ -1,6 +1,8 @@
 ---
 name: sdd-audit
 description: SDD Audit - Analyzes the codebase against conventions.md and project-rules.md, producing a classified report with correction prompts. Usage - /sdd-audit or /sdd-audit src/path/.
+requires: ["openspec/steering/conventions.md"]
+produces: []
 ---
 
 # SDD Audit
