@@ -10,9 +10,9 @@ Sin esto, el resto se construye sobre arena.
 
 | # | Tarea | Entregable | Fecha objetivo |
 |---|-------|-----------|----------------|
-| 1 | CI de validacion de skills | `.github/workflows/validate.yml` | 2026-04-18 |
-| 2 | CHANGELOG + tag v1.0.0 | `CHANGELOG.md`, tag `v1.0.0` | 2026-04-21 |
-| 3 | Smoke test del workflow completo | `examples/` con openspec resultante + listado de friccion | 2026-04-28 |
+| 1 | ~~CI de validacion de skills~~ | `.github/workflows/validate.yml` | ~~2026-04-18~~ 2026-04-15 |
+| 2 | ~~CHANGELOG + tag v1.0.0~~ | `CHANGELOG.md`, tag `v1.0.0` | ~~2026-04-21~~ 2026-04-15 |
+| 3 | ~~Smoke test del workflow completo~~ | `examples/api-demo/` con openspec + WALKTHROUGH.md (7 friction points) | ~~2026-04-28~~ 2026-04-15 |
 
 **Criterio de salida:** CI verde en cada push, version publicada, workflow validado end-to-end.
 
@@ -86,3 +86,6 @@ Cuando haya usuarios reales que validen el diseno.
 - [x] 2026-04-15 — Reestructura repo: `sdd-*/` → `skills/sdd-*/` (SkillKit compatible)
 - [x] 2026-04-15 — SkillKit como opcion de instalacion en README y docs
 - [x] 2026-04-15 — Issue rohitg00/skillkit#112 para registro en marketplace
+- [x] 2026-04-15 — CI de validacion (`validate-skills.sh` + GitHub Actions)
+- [x] 2026-04-15 — CHANGELOG.md + tag v1.0.0
+- [x] 2026-04-15 — Smoke test completo: `examples/api-demo/` con 7 friction points documentados
