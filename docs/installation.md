@@ -11,11 +11,19 @@ No other dependencies. Skills are pure markdown instructions — no Python, Node
 
 ### Claude Code plugin (recommended for Claude Code)
 
-```bash
-claude plugin install jorgeferrando/sdd-skills
+From within Claude Code, first add the marketplace:
+
+```
+/plugin marketplace add jorgeferrando/sdd-skills
 ```
 
-This installs all 16 skills directly from the repository using the Claude Code plugin system.
+Then install the plugin:
+
+```
+/plugin install sdd-skills@sdd-skills
+```
+
+This installs all 16 skills directly from the repository using the Claude Code plugin system. The skills become available across all your projects.
 
 ### One-liner (all tools)
 

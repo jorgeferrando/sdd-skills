@@ -24,8 +24,11 @@ Skills are **project-agnostic** and **LLM-agnostic**. They work with any languag
 
 ### Claude Code plugin
 
-```bash
-claude plugin install jorgeferrando/sdd-skills
+From within Claude Code:
+
+```
+/plugin marketplace add jorgeferrando/sdd-skills
+/plugin install sdd-skills@sdd-skills
 ```
 
 ### One-liner (all tools)
