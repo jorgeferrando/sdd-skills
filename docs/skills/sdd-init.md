@@ -5,7 +5,8 @@
 ## Usage
 
 ```
-/sdd-init
+/sdd-init            # Full or reduced questionnaire (auto-detected)
+/sdd-init --quick    # Minimal questions with sensible defaults
 ```
 
 Safe to re-run. If steering already exists, shows current state and exits.
@@ -18,9 +19,17 @@ Safe to re-run. If steering already exists, shows current state and exits.
 4. **Generates steering files** — 7 files in `openspec/steering/`
 5. **Creates `openspec/config.yaml`** — project configuration
 
-## Questionnaire
+## Questionnaire modes
 
-### If the project has no code (full questionnaire)
+### Quick mode (`--quick`)
+
+Asks only Groups A (Project) and B (Stack). Uses sensible defaults for the rest: solo developer, production quality, conventional commits, no CI, AI decides architecture and TDD per task. Best for small projects or quick evaluation.
+
+### Reduced mode (stack detected)
+
+Stack is detected from config files (`pyproject.toml`, `package.json`, etc.). Skips Group B. Asks Groups A and C.
+
+### Full mode (no code detected)
 
 | Group | Questions |
 |-------|-----------|
@@ -31,10 +40,6 @@ Safe to re-run. If steering already exists, shows current state and exits.
 | **E — Patterns** | Architecture style, TDD, commit format |
 
 Each question shows trade-offs with justifications. The user can answer "you decide" — the AI chooses and explains.
-
-### If the project has code (reduced questionnaire)
-
-Stack is detected from config files (`pyproject.toml`, `package.json`, etc.). Only Groups A and C are asked.
 
 ## Artifacts produced
 

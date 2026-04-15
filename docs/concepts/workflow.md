@@ -30,11 +30,11 @@ graph TD
 
 ## Phases explained
 
-### 1. Explore
+### 1. Explore (with recall)
 
 **Skill:** `/sdd-explore` (or embedded in `/sdd-new`)
 
-Read-only analysis of the codebase. The AI reads existing code, identifies patterns, checks canonical specs, and builds context. No files are created or modified.
+Read-only analysis. First searches archived specs and past decisions for relevant context (recall), then reads existing code, identifies patterns, and checks canonical specs. No files are created or modified.
 
 ### 2. Propose
 

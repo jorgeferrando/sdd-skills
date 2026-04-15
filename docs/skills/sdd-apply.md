@@ -8,6 +8,7 @@
 /sdd-apply                 # Start from first pending task
 /sdd-apply {change-name}   # Implement specific change
 /sdd-apply T03             # Continue from specific task
+/sdd-apply --auto          # Skip per-task confirmation
 ```
 
 ## Prerequisites
@@ -47,6 +48,8 @@ Each task is implemented by a **subagent** to keep the main conversation clean. 
 1. Checks the agent result
 2. Marks task as `[x]` in tasks.md
 3. Reports progress and asks before continuing to the next task
+
+With `--auto`, the orchestrator skips confirmation and proceeds immediately after a successful task. It still pauses if an agent reports an unexpected situation.
 
 ### Unplanned work
 

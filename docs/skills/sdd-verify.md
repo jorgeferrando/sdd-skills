@@ -17,20 +17,11 @@
 
 ### 1. Tests
 
-Runs the full test suite for the project:
-
-```bash
-# Whatever your project uses:
-pytest
-npm test
-go test ./...
-```
-
-All tests **must pass** before proceeding.
+Checks `openspec/steering/tech.md` for the project's test command and runs the full test suite. If no test runner is configured or detected, skips with a note in the report.
 
 ### 2. Linters and formatters
 
-Runs lint/format on changed files. Fixes issues, re-runs, commits atomically if needed.
+Checks `openspec/steering/tech.md` for configured linters. Runs them on changed files. Fixes issues, re-runs, commits atomically if needed. If no linter is configured, skips with a note. Does not install new tools during verify.
 
 ### 3. Self-review checklist
 
@@ -63,7 +54,7 @@ Pushes the branch and creates the pull request using context from `proposal.md` 
 VERIFY REPORT: {change-name}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Tests:          PASS (42 passed)
-Lint:           PASS
+Lint:           SKIPPED (no linter configured)
 Self-review:    PASS (8/8 checks)
 Spec compliance: PASS
 Audit:          PASS (20 rules, 0 violations)

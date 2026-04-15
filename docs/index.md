@@ -49,7 +49,7 @@ curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/insta
 
 | What | Where | Purpose |
 |------|-------|---------|
-| 16 skills | Installed per tool | Process automation |
+| 17 skills | Installed per tool | Process automation |
 | Steering files | `openspec/steering/` | Project context |
 | Canonical specs | `openspec/specs/` | Living documentation |
 | Change artifacts | `openspec/changes/` | Traceability |

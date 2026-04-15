@@ -7,6 +7,7 @@
 ```
 /sdd-steer          # Bootstrap: generate all steering files from scratch
 /sdd-steer sync     # Detect drift and propose updates
+/sdd-steer report   # Analyze steering health and coverage
 ```
 
 ## Bootstrap mode
@@ -49,6 +50,26 @@ Apply these changes? (y/n/select)
 
 !!! warning
     Sync mode **does not auto-apply**. It always asks for confirmation.
+
+## Report mode
+
+Read-only analysis of steering health. Checks:
+
+- **Rule counts** — MUST/SHOULD/MAY rules in conventions.md, by area
+- **Project rules growth** — how many rules came from user corrections
+- **Drift indicators** — whether tech.md matches detected tools/versions
+- **Empty sections** — areas in project-rules.md with no content yet
+- **History** — archived changes count, domains with canonical specs
+
+```
+STEERING REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Conventions: 12 MUST, 6 SHOULD, 2 MAY across 4 areas
+Project rules: 5 rules (Style: 2, Tests: 1, Architecture: 2)
+Health:
+  ✓ conventions.md — up to date
+  ⚠ tech.md — Node version mismatch (file: 18, detected: 22)
+```
 
 ## Next step
 

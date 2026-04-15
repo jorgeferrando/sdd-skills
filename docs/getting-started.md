@@ -8,7 +8,7 @@ This guide walks you through the complete SDD workflow step by step. Each sectio
 
 **Why:** It is the first command of any SDD project. Without it, the `openspec/` structure and steering files do not exist, and the rest of the workflow cannot function. `/sdd-apply`, for example, refuses to start if it cannot find `conventions.md`.
 
-**What it does:** Init runs a guided onboarding — scans the environment (language, framework, tools), presents a questionnaire about the product, stack, team and rigor level, and generates 7 files in `openspec/steering/` from the answers:
+**What it does:** Init runs a guided onboarding — scans the environment (language, framework, tools), presents a questionnaire about the product, stack, team and rigor level, and generates 7 files in `openspec/steering/` from the answers. Use `/sdd-init --quick` for minimal questions with sensible defaults (best for small projects or quick evaluation).
 
 | File | Content |
 |------|---------|
@@ -57,7 +57,7 @@ It also creates `config.yaml` with the openspec paths and the directory structur
 
 **What it does:** Internally, sdd-new runs two things in sequence:
 
-1. **Explore** (`sdd-explore`): Reads the codebase in read-only mode. Looks for patterns similar to the requested change, identifies files that will be affected, consults `openspec/INDEX.md` to find relevant canonical specs, and analyzes how tests are structured for similar code. Writes findings to `openspec/changes/{change-name}/notes.md` so the next phase can read them.
+1. **Explore** (`sdd-explore`): First, searches archived specs and past decisions for relevant context — previous proposals in the same domain, discarded alternatives, business rules (recall). Then reads the codebase in read-only mode: patterns similar to the requested change, files that will be affected, relevant canonical specs from `openspec/INDEX.md`, and test structure. Writes all findings to `openspec/changes/{change-name}/notes.md` so the next phase can read them.
 
 2. **Propose** (`sdd-propose`): Reads the exploration notes and project steering. Analyzes whether the user's description is sufficient to fill all sections of a complete proposal (Context, Problem, Scope, Solution, Alternatives, Risks, Impact, Dependencies, Acceptance Criteria). If there are gaps, asks specific questions until all sections are covered. Only then generates `openspec/changes/{change-name}/proposal.md`.
 
@@ -134,7 +134,7 @@ The **agent per task** receives the task description, steering files, and spec c
 4. Makes an atomic commit with format `[{change-name}] Description`
 5. Returns a short summary (what was done, files touched, commit hash, test result)
 
-The **orchestrator** (the main conversation) stays clean — it only sees summaries, not the code that each agent read or the test output. Between tasks, it marks `[x]` in tasks.md and asks for confirmation before launching the next agent.
+The **orchestrator** (the main conversation) stays clean — it only sees summaries, not the code that each agent read or the test output. Between tasks, it marks `[x]` in tasks.md and asks for confirmation before launching the next agent (use `/sdd-apply --auto` to skip confirmation for small changes).
 
 If the user requests an unplanned change, apply registers it as BUG01/IMP01 in tasks.md before implementing. tasks.md is the single source of truth for everything that was done.
 
@@ -226,8 +226,10 @@ FAST-FORWARD CHANGE
 AUXILIARY SKILLS (at any time)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   /sdd-steer sync    Update steering when the project evolves
+  /sdd-steer report  Analyze steering health and drift
   /sdd-audit         Validate code against conventions
   /sdd-explore       Investigate without creating a change
+  /sdd-recall        Search past specs and design decisions
   /sdd-docs          Generate documentation site from openspec
 ```
 

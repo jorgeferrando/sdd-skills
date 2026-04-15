@@ -27,6 +27,10 @@ Checks which artifacts exist in the change directory and runs the next skill:
 
 If multiple active changes exist and no name is provided, prompts the user to choose.
 
+## Custom skills
+
+If `openspec/skills/` exists, sdd-continue reads custom skill files (`*.md` with YAML frontmatter) and integrates them into the phase sequence. Each custom skill specifies an `after` field (which built-in phase it follows) and a `mode` (inline or agent). This lets teams extend the workflow without modifying the built-in skills.
+
 ## When to use
 
 - You lose track of where you are in the workflow
