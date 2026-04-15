@@ -10,7 +10,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 count=0
 
-for dir in "$SCRIPT_DIR"/sdd-*/; do
+for dir in "$SCRIPT_DIR"/skills/sdd-*/; do
     src="$dir/instructions.md"
     dst="$dir/SKILL.md"
 

@@ -12,7 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_SRC="$SCRIPT_DIR"
 
 # When piped through curl, BASH_SOURCE[0] may be empty — fallback to a temp clone
-if [[ ! -d "$SKILLS_SRC/sdd-init" ]]; then
+if [[ ! -d "$SKILLS_SRC/skills/sdd-init" ]]; then
     echo "Downloading SDD skills from GitHub..."
     TMP_DIR="$(mktemp -d)"
     trap 'rm -rf "$TMP_DIR"' EXIT
@@ -100,7 +100,7 @@ install_skills() {
     local installed=0
     local skipped=0
 
-    for skill_dir in "$SKILLS_SRC"/sdd-*/; do
+    for skill_dir in "$SKILLS_SRC"/skills/sdd-*/; do
         local skill_name
         skill_name="$(basename "$skill_dir")"
         local target="$SKILLS_DEST/$skill_name"

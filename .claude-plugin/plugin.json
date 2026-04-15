@@ -16,21 +16,21 @@
     "architecture"
   ],
   "skills": [
-    "./sdd-init",
-    "./sdd-discover",
-    "./sdd-new",
-    "./sdd-explore",
-    "./sdd-propose",
-    "./sdd-spec",
-    "./sdd-design",
-    "./sdd-tasks",
-    "./sdd-apply",
-    "./sdd-verify",
-    "./sdd-archive",
-    "./sdd-ff",
-    "./sdd-continue",
-    "./sdd-steer",
-    "./sdd-audit",
-    "./sdd-docs"
+    "./skills/sdd-init",
+    "./skills/sdd-discover",
+    "./skills/sdd-new",
+    "./skills/sdd-explore",
+    "./skills/sdd-propose",
+    "./skills/sdd-spec",
+    "./skills/sdd-design",
+    "./skills/sdd-tasks",
+    "./skills/sdd-apply",
+    "./skills/sdd-verify",
+    "./skills/sdd-archive",
+    "./skills/sdd-ff",
+    "./skills/sdd-continue",
+    "./skills/sdd-steer",
+    "./skills/sdd-audit",
+    "./skills/sdd-docs"
   ]
 }

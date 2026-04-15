@@ -46,6 +46,15 @@ The installer auto-detects your AI tool, or you can specify it:
 ./install-skills.sh --copilot   # GitHub Copilot
 ```
 
+### SkillKit (Multi-Agent)
+
+Install across 45+ AI agents (Claude, Cursor, Copilot, Windsurf, Codex, Devin, and more):
+
+```bash
+npx skillkit install jorgeferrando/sdd-skills
+skillkit sync
+```
+
 ### Manual
 
 ```bash
