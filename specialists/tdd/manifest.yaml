@@ -1,0 +1,5 @@
+name: tdd
+description: Enforces Test-Driven Development — tests are written BEFORE implementation. Changes task ordering (test first, code second) and prevents code without a failing test.
+applies_to: all
+files:
+  - conventions-tdd.md → openspec/steering/conventions-tdd.md
