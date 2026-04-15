@@ -16,8 +16,19 @@ produces: ["openspec/changes/{change}/notes.md"]
 /sdd-explore                     # General exploration for the active change
 ```
 
+## Step 1: Recall past decisions
+
+Before exploring the codebase, search project history for relevant context. Scan `openspec/INDEX.md`, `openspec/specs/`, and `openspec/changes/archive/` for:
+
+- **Previous specs** in the same domain — canonical or archived
+- **Design decisions** that explain why something was built a certain way
+- **Proposals** that addressed a similar problem (including discarded alternatives)
+
+If matches are found, include them in the output under "Prior decisions". If no archived changes or specs exist (new project), skip this step silently.
+
 ## What to look for
 
+- **Prior decisions** — what was already decided in this domain (from Step 1)
 - **Similar patterns** — existing implementations of the same type of change
 - **Affected files** — what will need to change and why
 - **Domain models** — data structures, interfaces, contracts involved
@@ -31,6 +42,10 @@ Write findings to `openspec/changes/{change-name}/notes.md` so downstream skills
 
 ```markdown
 # Exploration Notes: {change-name}
+
+## Prior Decisions
+- {domain}: {decision from archived spec/design — why it matters for this change}
+- {domain}: {discarded alternative — avoid repeating}
 
 ## Relevant Files
 - `src/...` — {reason}
@@ -52,6 +67,9 @@ Also show a concise summary to the user:
 EXPLORE COMPLETE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Notes written to: openspec/changes/{change-name}/notes.md
+
+Prior decisions:
+  - {domain}: {key decision or discarded alternative}
 
 Relevant files:
   - src/...   (reason)
