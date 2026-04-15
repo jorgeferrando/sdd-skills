@@ -139,6 +139,78 @@ Points to all other steering files. Loaded first by skills to find what to read:
 - `openspec/steering/structure.md` -- directory layout
 ```
 
+## Specialists — domain-specific advisors
+
+Specialists are pre-built convention packs that add domain expertise to the workflow. They are `.md` files with RFC 2119 rules, installed to `openspec/steering/` and read automatically by `/sdd-apply`, `/sdd-audit`, and `/sdd-verify`.
+
+No new agents, no new phases — same workflow, more knowledge.
+
+### Available specialists
+
+| Specialist | What it adds |
+|-----------|-------------|
+| **anti-overengineering** | Rules against premature abstractions, unnecessary patterns, speculative design |
+| **testing** | Proper test doubles (stub vs mock vs fake), no redundant tests, behavior-focused assertions |
+
+### Installing a specialist
+
+```bash
+# From the sdd-skills repo:
+./install-specialist.sh                        # list available
+./install-specialist.sh anti-overengineering    # install one
+./install-specialist.sh --all                   # install all
+./install-specialist.sh --remove testing        # remove one
+```
+
+This copies convention files to `openspec/steering/`. Skills pick them up automatically on next invocation.
+
+### Creating a custom specialist
+
+A specialist is a directory in `specialists/{name}/` with two things:
+
+**1. `manifest.yaml`** — metadata:
+
+```yaml
+name: nodejs
+description: Node.js expert — event loop, async patterns, streams, memory management
+applies_to: ["node", "typescript"]
+files:
+  - conventions-nodejs.md → openspec/steering/conventions-nodejs.md
+```
+
+**2. One or more `.md` files** — conventions in RFC 2119 format:
+
+```markdown
+# Specialist: Node.js
+
+> Rules for Node.js-specific patterns and anti-patterns.
+> Read by sdd-apply, sdd-audit, and sdd-verify.
+
+## Event Loop
+- **MUST NOT** use synchronous fs methods (readFileSync, writeFileSync)
+- **MUST** use Promise.all() for independent async operations
+- **SHOULD** use streams for data > 1MB
+
+## Error handling
+- **MUST** handle rejected promises — unhandled rejections crash Node 18+
+- **MUST NOT** use try/catch around synchronous code that cannot throw
+
+## How to detect violations
+When reviewing code, flag:
+1. Any import of a *Sync function from node:fs
+2. Sequential awaits that could be parallelized
+3. Large buffers created from file reads
+```
+
+**Guidelines for writing specialist rules:**
+
+- Use RFC 2119 levels (MUST/SHOULD/MAY) — same as `conventions.md`
+- Include a "How to detect violations" section for audit clarity
+- Classify violations as **Important** (quality goal) not **Critical** (hard gate)
+- Keep rules actionable: "MUST use X" is better than "consider using X"
+- Include the **why** after each rule — a one-line reason after the dash
+- Don't duplicate rules already in the project's `conventions.md`
+
 ## Updating steering
 
 ### After major changes
