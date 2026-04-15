@@ -156,14 +156,16 @@ Entry format (standard INDEX.md):
 ```
 sdd-discover complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Specs generated:
+Specs generated (Status: inferred):
   ✓ core    → openspec/specs/core/spec.md
   ✓ tui     → openspec/specs/tui/spec.md
   ✓ tests   → openspec/specs/tests/spec.md
 Skipped: —
 
 Next steps:
-  Validate specs with /sdd-spec {domain}
+  Review each spec directly in openspec/specs/{domain}/spec.md
+  Edit inferred specs to correct any inaccuracies
+  When a domain needs changes later, /sdd-new will create a delta spec via /sdd-spec
 ```
 
 ## Rules

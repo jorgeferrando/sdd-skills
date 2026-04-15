@@ -15,7 +15,7 @@
 
 ## What it does
 
-1. **Identifies affected domains** — which bounded contexts are involved
+1. **Reads proposal.md** — understands problem, scope, and solution before identifying domains
 2. **Checks canonical spec** — reads `openspec/specs/{domain}/spec.md` if it exists
 3. **Creates delta spec** — only what changes, not a full replacement
 4. **Clarifies behavior** — asks about edge cases, validation rules, errors

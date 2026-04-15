@@ -24,7 +24,7 @@ None. This is a read-only operation.
 
 ## Artifacts produced
 
-None. Produces a summary in the conversation — no files created or modified.
+- `openspec/changes/{change-name}/notes.md` — structured exploration findings (relevant files, existing patterns, specs, constraints)
 
 ## Next step
 

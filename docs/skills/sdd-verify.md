@@ -49,6 +49,14 @@ Runs lint/format on changed files. Fixes issues, re-runs, commits atomically if 
 
 For TUI/UI projects, runs the application and verifies the golden path manually. Documents any issues found as `BUGxx` in `tasks.md`.
 
+### 5. Convention audit
+
+If `openspec/steering/conventions.md` exists, runs `/sdd-audit` on changed files. Fixes critical violations before proceeding.
+
+### 6. Create PR
+
+Pushes the branch and creates the pull request using context from `proposal.md` (problem, solution, acceptance criteria).
+
 ## Output
 
 ```
@@ -58,10 +66,12 @@ Tests:          PASS (42 passed)
 Lint:           PASS
 Self-review:    PASS (8/8 checks)
 Spec compliance: PASS
+Audit:          PASS (20 rules, 0 violations)
 
 Status: READY FOR PR
+PR: https://github.com/org/repo/pull/123
 ```
 
 ## Next step
 
-- `/sdd-archive` — close the cycle, merge specs, create PR
+- `/sdd-archive` — close the cycle, merge specs into canonical

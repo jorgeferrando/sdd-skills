@@ -32,10 +32,7 @@ Quick codebase exploration:
 
 ### 2 — Propose
 
-Create `openspec/changes/{change-name}/proposal.md`:
-- Problem description
-- Proposed solution and discarded alternatives
-- Estimated impact (files, domains, tests)
+Analyze input completeness against all proposal sections: Context, Problem, Scope, Proposed Solution, Alternatives Discarded, Risks & Mitigations, Impact, Dependencies, and Acceptance Criteria. If any section cannot be substantively filled, use `AskUserQuestion` to resolve gaps before writing. Then create `openspec/changes/{change-name}/proposal.md` with all sections filled.
 
 ### 3 — Spec
 

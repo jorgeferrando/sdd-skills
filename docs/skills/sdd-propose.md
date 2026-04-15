@@ -1,6 +1,6 @@
 # /sdd-propose
 
-> Create a proposal documenting the problem, solution, and alternatives.
+> Analyze input completeness, ask clarifying questions, and create a complete proposal documenting context, problem, solution, scope, risks, and acceptance criteria.
 
 ## Usage
 
@@ -19,26 +19,32 @@ Usually run as part of `/sdd-new`. Use standalone when you want to create a prop
 
 1. Determines change name (kebab-case)
 2. Creates `openspec/changes/{change-name}/` directory
-3. Creates `proposal.md`
-4. Presents proposal for feedback
+3. Gathers context from explore output and steering files
+4. Analyzes which proposal sections can be filled vs. which have gaps
+5. Asks clarifying questions until all sections are covered
+6. Generates complete `proposal.md`
+7. Validates with targeted questions and applies feedback
 
 ## Artifact format
 
 ```markdown
 # Proposal: {Change Title}
 
+## Metadata
+## Context
 ## Problem
-{What's wrong or missing}
-
+## Scope (In scope / Out of scope)
 ## Proposed Solution
-{High-level approach}
-
 ## Alternatives Discarded
-{Other approaches and why they were rejected}
-
+## Risks & Mitigations
 ## Impact
-{Files affected, domains, tests needed}
+## Dependencies
+## Acceptance Criteria
 ```
+
+## Key behavior
+
+The skill does **not** generate the proposal immediately. It first checks whether the user's input covers all required sections. For any section with insufficient information, it asks specific clarifying questions before writing. This ensures the output is always a complete, substantive proposal — never a template with empty placeholders.
 
 ## Next step
 

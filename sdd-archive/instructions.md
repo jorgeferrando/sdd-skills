@@ -16,15 +16,14 @@ description: SDD Archive - Close the change cycle. Move the change to the archiv
 
 ## Prerequisites
 
-- `/sdd-verify` completed (all checks green)
-- PR created
+- `/sdd-verify` completed (all checks green, PR created)
 
 ## Step 1: Verify state
 
 Before archiving, confirm:
 1. All tasks in `tasks.md` marked `[x]`
 2. `/sdd-verify` passed
-3. PR created
+3. PR exists (created during verify)
 
 ```bash
 # Should return 0

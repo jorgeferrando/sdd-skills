@@ -34,5 +34,5 @@ Inferred specs include: metadata, context, current behavior, EARS requirements, 
 
 ## Next step
 
-- `/sdd-spec {domain}` — validate and enhance inferred specs
-- `/sdd-new "description"` — start a change
+- Review each spec directly in `openspec/specs/{domain}/spec.md` and edit to correct inaccuracies
+- `/sdd-new "description"` — start a change (creates delta specs via `/sdd-spec`)

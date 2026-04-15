@@ -25,11 +25,32 @@ description: SDD Explore - Read-only codebase exploration to understand context 
 
 ## Output
 
-A concise summary of findings:
+Write findings to `openspec/changes/{change-name}/notes.md` so downstream skills (especially `sdd-propose`) can reference them across sessions:
+
+```markdown
+# Exploration Notes: {change-name}
+
+## Relevant Files
+- `src/...` — {reason}
+- `src/...` — {reason}
+
+## Existing Patterns
+- Pattern X used in Y — can follow the same approach
+
+## Relevant Specs
+- `openspec/specs/{domain}/spec.md` — {why relevant}
+
+## Key Constraints
+- {anything that affects the design}
+```
+
+Also show a concise summary to the user:
 
 ```
 EXPLORE COMPLETE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Notes written to: openspec/changes/{change-name}/notes.md
+
 Relevant files:
   - src/...   (reason)
   - src/...   (reason)

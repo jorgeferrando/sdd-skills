@@ -18,9 +18,9 @@ description: SDD Spec - Create or update domain specs in openspec/. The spec des
 
 - `proposal.md` created and reviewed
 
-## Step 1: Identify the domain
+## Step 1: Read proposal and identify the domain
 
-Determine the domain/bounded context affected. Check if a canonical spec already exists in `openspec/specs/{domain}/spec.md`.
+Read `openspec/changes/{change-name}/proposal.md` to understand the problem, scope, and proposed solution. From the proposal, determine the domain/bounded context affected. Check if a canonical spec already exists in `openspec/specs/{domain}/spec.md`.
 
 ```bash
 mkdir -p openspec/changes/{change-name}/specs/{domain}

@@ -102,7 +102,13 @@ If a bug is found during smoke test:
 2. Fix and commit atomically
 3. Re-run smoke test until it passes
 
-## Step 6: Final report
+## Step 6: Convention audit (if available)
+
+If `openspec/steering/conventions.md` exists, run `sdd-audit` on the files changed in this branch as an additional quality gate. Include the audit result in the final report.
+
+If audit finds critical violations, fix them before proceeding (same flow as Step 3: fix, commit, re-run).
+
+## Step 7: Final report
 
 ```
 VERIFY REPORT: {change-name}
@@ -111,10 +117,25 @@ Tests:    N/N PASS
 Quality:  PASS
 Self-review: ✓
 Spec compliance: ✓
+Audit:   ✓ (N rules checked, 0 violations)
 
 Status: READY FOR PR
 ```
 
+## Step 8: Create PR
+
+Create the pull request for the change:
+
+```bash
+git push -u origin {branch-name}
+```
+
+Then create the PR using the project's tooling (e.g. `gh pr create`). Use `proposal.md` context for the PR title and body:
+- **Title:** short summary from the proposal
+- **Body:** Problem, Proposed Solution, and Acceptance Criteria sections from `proposal.md`
+
+Show the PR URL to the user for review.
+
 ## Next Step
 
-All checks green → `/sdd-archive` to close the change + create PR.
+PR created and reviewed → `/sdd-archive` to close the change.

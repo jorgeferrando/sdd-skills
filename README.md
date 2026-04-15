@@ -64,6 +64,8 @@ Or use fast-forward for small, clear-scope changes:
 /sdd-archive                            # close the cycle, merge specs
 ```
 
+For a detailed walkthrough of each step — why it runs, what it produces, and how to advance — see the **[Quick Start Guide](https://jorgeferrando.github.io/sdd-skills/getting-started/)**.
+
 ---
 
 ## The SDD workflow
