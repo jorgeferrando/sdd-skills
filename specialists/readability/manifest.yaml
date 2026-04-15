@@ -1,0 +1,5 @@
+name: readability
+description: Enforces descriptive naming, clear structure, and code that reads like prose. No abbreviations, no clever tricks, no implicit behavior.
+applies_to: all
+files:
+  - conventions-readability.md → openspec/steering/conventions-readability.md
