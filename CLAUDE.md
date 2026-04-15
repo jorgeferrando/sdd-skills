@@ -106,6 +106,8 @@ Concept pages in `docs/concepts/` explain the workflow, openspec directory, and 
 ## Scripts
 
 - `install-skills.sh` — multi-tool installer. Clones from this repo when run via curl.
+- `sync-skills.sh` — copies `instructions.md` to `SKILL.md` in each skill directory.
+- `validate-skills.sh` — checks skill structure, frontmatter, sync status, plugin.json consistency, and docs pages. Runs in CI on every push/PR.
 - `sdd-env-scan.sh` — environment detection script used by `/sdd-init`. Outputs `category:name:value` lines.
 
 ## Making changes

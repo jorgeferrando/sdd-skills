@@ -1,0 +1,23 @@
+name: Validate skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - '.claude-plugin/**'
+      - 'validate-skills.sh'
+  pull_request:
+    paths:
+      - 'skills/**'
+      - '.claude-plugin/**'
+      - 'validate-skills.sh'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run skill validation
+        run: bash validate-skills.sh
