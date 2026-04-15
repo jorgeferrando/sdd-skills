@@ -24,10 +24,10 @@ Adquisicion de primeros usuarios.
 
 | # | Tarea | Entregable | Fecha objetivo |
 |---|-------|-----------|----------------|
-| 4 | Verificar compatibilidad con SkillKit | Instalacion probada, ajustes de frontmatter si necesario | 2026-05-02 |
-| 5 | Mejoras al installer | Seleccion de skills, dry-run, colores ANSI | 2026-05-07 |
-| 6 | `sdd-init` modo rapido (`--quick`) | `instructions.md` actualizado con deteccion de modo | 2026-05-14 |
-| 7 | Evaluar si `install-skills.sh` pasa a secundario | Decision documentada + simplificacion si aplica | 2026-05-19 |
+| 4 | ~~Verificar compatibilidad con SkillKit~~ | 16/16 skills detectados correctamente | ~~2026-05-02~~ 2026-04-15 |
+| 5 | ~~Mejoras al installer~~ | Seleccion de skills, dry-run, colores ANSI | ~~2026-05-07~~ 2026-04-15 |
+| 6 | ~~`sdd-init` modo rapido (`--quick`)~~ | `instructions.md` actualizado con deteccion de modo | ~~2026-05-14~~ 2026-04-15 |
+| 7 | ~~Evaluar si `install-skills.sh` pasa a secundario~~ | Mantener como fallback sin Node; SkillKit es primario para multi-agent | ~~2026-05-19~~ 2026-04-15 |
 
 **Criterio de salida:** Un usuario nuevo puede instalar y ejecutar su primer ciclo SDD en menos de 5 minutos.
 
@@ -89,3 +89,8 @@ Cuando haya usuarios reales que validen el diseno.
 - [x] 2026-04-15 — CI de validacion (`validate-skills.sh` + GitHub Actions)
 - [x] 2026-04-15 — CHANGELOG.md + tag v1.0.0
 - [x] 2026-04-15 — Smoke test completo: `examples/api-demo/` con 7 friction points documentados
+- [x] 2026-04-15 — 5 friction points resueltos (F1, F2, F6, F7, F8)
+- [x] 2026-04-15 — SkillKit compatibilidad verificada: 16/16 skills detectados
+- [x] 2026-04-15 — Installer mejorado: seleccion de skills, --dry-run, colores ANSI
+- [x] 2026-04-15 — sdd-init --quick mode (resuelto como friction fix F2)
+- [x] 2026-04-15 — install-skills.sh: se mantiene como fallback, SkillKit es primario para multi-agent
