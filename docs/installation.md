@@ -9,7 +9,15 @@ No other dependencies. Skills are pure markdown instructions — no Python, Node
 
 ## Install methods
 
-### One-liner (recommended)
+### Claude Code plugin (recommended for Claude Code)
+
+```bash
+claude plugin install jorgeferrando/sdd-skills
+```
+
+This installs all 16 skills directly from the repository using the Claude Code plugin system.
+
+### One-liner (all tools)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/install-skills.sh | bash

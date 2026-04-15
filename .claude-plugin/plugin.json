@@ -1,0 +1,36 @@
+{
+  "name": "sdd-skills",
+  "description": "Spec-Driven Development skills for AI coding assistants. 16 skills that guide the AI through a structured workflow: spec, design, tasks, implement, verify, archive. Works with any language, framework, or stack.",
+  "version": "1.0.0",
+  "author": {
+    "name": "jorgeferrando"
+  },
+  "license": "MIT",
+  "keywords": [
+    "sdd",
+    "spec-driven-development",
+    "workflow",
+    "skills",
+    "openspec",
+    "code-quality",
+    "architecture"
+  ],
+  "skills": [
+    "./sdd-init",
+    "./sdd-discover",
+    "./sdd-new",
+    "./sdd-explore",
+    "./sdd-propose",
+    "./sdd-spec",
+    "./sdd-design",
+    "./sdd-tasks",
+    "./sdd-apply",
+    "./sdd-verify",
+    "./sdd-archive",
+    "./sdd-ff",
+    "./sdd-continue",
+    "./sdd-steer",
+    "./sdd-audit",
+    "./sdd-docs"
+  ]
+}

@@ -91,6 +91,12 @@ Do not rename these files without updating every skill that references them.
 
 For Claude Code, `instructions.md` is renamed to `SKILL.md` during installation. For other tools, the file stays as `instructions.md`.
 
+## Claude plugin distribution
+
+The `.claude-plugin/` directory contains `plugin.json` and `marketplace.json` for distribution as a Claude Code plugin. Each skill directory also has a `SKILL.md` file (required by the plugin system).
+
+**Important:** `SKILL.md` and `instructions.md` must stay in sync. When modifying a skill, update `instructions.md` (the source of truth) and then run `sync-skills.sh` to copy changes to `SKILL.md`.
+
 ## Documentation
 
 Each skill has a corresponding page in `docs/skills/sdd-{name}.md`. When modifying a skill, update its doc page to match. The nav structure is in `mkdocs.yml`.
@@ -104,6 +110,6 @@ Concept pages in `docs/concepts/` explain the workflow, openspec directory, and 
 
 ## Making changes
 
-- Adding a new skill: create `sdd-{name}/instructions.md`, add `docs/skills/sdd-{name}.md`, add entry in `mkdocs.yml` nav, update the workflow graph in this file and in `docs/concepts/workflow.md`
-- Modifying a skill: update the skill, its doc page, and check if `sdd-continue` or `sdd-ff` need adjustments (they orchestrate other skills)
+- Adding a new skill: create `sdd-{name}/instructions.md`, run `sync-skills.sh`, add `docs/skills/sdd-{name}.md`, add entry in `mkdocs.yml` nav, add entry in `.claude-plugin/plugin.json` skills array, update the workflow graph in this file and in `docs/concepts/workflow.md`
+- Modifying a skill: update `instructions.md`, run `sync-skills.sh`, update its doc page, and check if `sdd-continue` or `sdd-ff` need adjustments (they orchestrate other skills)
 - Renaming openspec paths: grep all `instructions.md` files — most skills reference `openspec/` paths directly

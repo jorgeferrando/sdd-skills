@@ -1,0 +1,35 @@
+{
+  "name": "sdd-skills",
+  "id": "sdd-skills",
+  "owner": {
+    "name": "jorgeferrando"
+  },
+  "metadata": {
+    "description": "Spec-Driven Development workflow for AI coding assistants. 16 skills covering the full lifecycle: propose, spec, design, tasks, apply, verify, archive.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "sdd-skills",
+      "source": "./",
+      "description": "16 interconnected skills implementing the SDD workflow. Every code change starts with a specification, follows a structured pipeline, and produces traceable artifacts in openspec/.",
+      "version": "1.0.0",
+      "author": {
+        "name": "jorgeferrando"
+      },
+      "keywords": [
+        "sdd",
+        "spec-driven-development",
+        "workflow",
+        "skills",
+        "openspec",
+        "code-quality",
+        "architecture",
+        "specification",
+        "design",
+        "testing"
+      ],
+      "category": "workflow"
+    }
+  ]
+}

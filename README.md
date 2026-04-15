@@ -22,7 +22,13 @@ Skills are **project-agnostic** and **LLM-agnostic**. They work with any languag
 
 ## Install
 
-### One-liner
+### Claude Code plugin
+
+```bash
+claude plugin install jorgeferrando/sdd-skills
+```
+
+### One-liner (all tools)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/jorgeferrando/sdd-skills/main/install-skills.sh | bash
