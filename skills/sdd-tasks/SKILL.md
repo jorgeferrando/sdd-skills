@@ -40,8 +40,9 @@ git status
 git branch --show-current
 ```
 
-Create a branch if needed:
+Create a feature branch if the project uses branching (check `conventions.md` or `tech.md` for branching strategy). If already on a feature branch or the project commits directly to main, skip branch creation:
 ```bash
+# Only if not already on a feature branch:
 git checkout -b {ticket-or-change-name}
 ```
 

@@ -122,7 +122,7 @@ Commits: 2/5
 Continue with T03?
 ```
 
-Wait for user confirmation before launching the next agent. Do not batch multiple tasks into a single agent — one task, one agent, one commit.
+Wait for user confirmation before launching the next agent, unless the user specified `/sdd-apply --auto` — in auto mode, proceed to the next task immediately after a successful completion (no confirmation needed). If an agent reports an unexpected situation, always pause and ask regardless of mode. Do not batch multiple tasks into a single agent — one task, one agent, one commit.
 
 ## Step 4: Changes requested during apply
 

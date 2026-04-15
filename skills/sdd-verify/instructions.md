@@ -26,7 +26,7 @@ git diff --name-only main..HEAD    # or dev..HEAD depending on your base branch
 
 ## Step 2: Run tests
 
-Run the project's full test suite:
+Check `openspec/steering/tech.md` for the project's test command. Run the full test suite:
 ```bash
 # Use whatever your project uses:
 pytest
@@ -35,11 +35,11 @@ go test ./...
 ./gradlew test
 ```
 
-All tests must pass before proceeding.
+All tests must pass before proceeding. If no test command is configured in `tech.md` and no test runner is detected, skip this step and note it in the final report as `Tests: SKIPPED (no test runner configured)`.
 
 ## Step 3: Quality checks
 
-Run linters and formatters on changed files:
+Check `openspec/steering/tech.md` for configured linters/formatters. Run them on changed files:
 ```bash
 # Examples:
 ruff check src/
@@ -47,7 +47,7 @@ eslint src/
 golangci-lint run
 ```
 
-Fix any issues, re-run, and commit the fix atomically.
+Fix any issues, re-run, and commit the fix atomically. If no linter is configured in `tech.md` and none is detected in the project, skip this step and note it in the final report as `Quality: SKIPPED (no linter configured)`. Do not install new tools during verify.
 
 ## Step 4: Self-review checklist
 

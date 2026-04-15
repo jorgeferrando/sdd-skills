@@ -52,10 +52,16 @@ grep -q "openspec/" .git/info/exclude 2>/dev/null || echo "openspec/" >> .git/in
 
 ## Step 3: Detect project state
 
-Run environment scan:
+Run environment scan. The script may be in different locations depending on how skills were installed:
 ```bash
-bash scripts/sdd-env-scan.sh 2>/dev/null || bash "$(dirname "$0")/../scripts/sdd-env-scan.sh" 2>/dev/null
+# Try common locations — use whichever resolves
+bash sdd-env-scan.sh 2>/dev/null ||
+bash scripts/sdd-env-scan.sh 2>/dev/null ||
+bash ~/.claude/skills/sdd-init/sdd-env-scan.sh 2>/dev/null ||
+bash .claude/skills/sdd-init/sdd-env-scan.sh 2>/dev/null
 ```
+
+If the scan script is not found, detect the environment manually by checking for common files (`package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, etc.) and runtimes (`node --version`, `python3 --version`, etc.). Do not block on a missing scan script.
 
 Parse the output to determine:
 - **Stack detected**: which runtimes and config files are present
@@ -80,7 +86,10 @@ To start a new feature: /sdd-new "description"
 
 ## Step 4: Questionnaire
 
-**Mode**: full (no code detected) or reduced (stack detected from config files).
+**Mode**:
+- **quick** — if the user ran `/sdd-init --quick` or the project is small (< 5 source files): ask only Groups A and B, skip C/D/E. Use sensible defaults: solo developer, production quality, conventional commits, no CI, AI decides architecture and TDD per task.
+- **reduced** — stack detected from config files: skip Group B (already known).
+- **full** — no code detected, no `--quick` flag: ask all groups.
 
 Present questions one group at a time. Wait for answers before proceeding.
 

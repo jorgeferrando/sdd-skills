@@ -20,9 +20,9 @@ A simple HTTP server with one endpoint (`GET /`). The change adds a `GET /health
 - `openspec/config.yaml`
 - `openspec/steering/` — 7 files (product, tech, structure, conventions, environment, project-skill, project-rules)
 
-**Friction found:**
-- **F1:** Step 3 references `scripts/sdd-env-scan.sh` but the path assumes the script is in the sdd-skills repo, not the user's project. When running as an installed skill, the path won't resolve. The fallback path also assumes a specific directory structure. Needs a clearer resolution strategy or should detect where the script is installed.
-- **F2:** The questionnaire (Steps 4-5) is thorough but the 454-line instruction file is heavy for the AI's context window. In practice, the AI follows it well, but a `--quick` mode that skips Groups D and E would reduce friction for simple projects.
+**Friction found and resolved:**
+- **F1:** ~~Step 3 referenced `scripts/sdd-env-scan.sh` with a single path that didn't resolve for installed skills.~~ Fixed: multiple path fallbacks + manual detection if script not found.
+- **F2:** ~~The questionnaire had no quick mode for simple projects.~~ Fixed: added `--quick` mode that asks only Groups A and B with sensible defaults.
 
 ### 2. `/sdd-new` → `/sdd-explore` + `/sdd-propose` — Start change
 
@@ -30,7 +30,7 @@ A simple HTTP server with one endpoint (`GET /`). The change adds a `GET /health
 - `openspec/changes/add-health-check/proposal.md`
 
 **Friction found:**
-- **F3:** `sdd-explore` produces `notes.md` but `sdd-propose` references it as optional context. The handoff works but `notes.md` is never explicitly created by `sdd-explore` — the skill says "produce summary" without specifying the output file path in a consistent way. Step 1 of sdd-explore should specify: "Write findings to `openspec/changes/{change-name}/notes.md`".
+- None. `sdd-explore` already specifies `notes.md` output path and `sdd-propose` references it correctly.
 
 ### 3. `/sdd-spec` — Behavior specification
 
@@ -53,8 +53,8 @@ A simple HTTP server with one endpoint (`GET /`). The change adds a `GET /health
 **Artifacts produced:**
 - `openspec/changes/add-health-check/tasks.md`
 
-**Friction found:**
-- **F6:** Step 3 says "Create a branch if needed" but doesn't specify *when* it's needed vs. not. For a smoke test running in an existing repo (like this example inside sdd-skills), creating a branch would be wrong. The instruction should say: "Create a branch if the project uses feature branches (check conventions.md for commit/branching strategy)."
+**Friction found and resolved:**
+- **F6:** ~~Step 3 said "Create a branch if needed" without specifying when.~~ Fixed: now says to check conventions.md for branching strategy and skip if already on a feature branch.
 
 ### 6. `/sdd-apply` — Implementation
 
@@ -63,30 +63,32 @@ A simple HTTP server with one endpoint (`GET /`). The change adds a `GET /health
 - `src/index.js` (modified)
 - `test/health.test.js` (new)
 
-**Friction found:**
-- **F7:** The subagent prompt template in Step 3 is excellent — gives the agent everything it needs. However, the instruction "Wait for user confirmation before launching the next agent" can be tedious for small changes. Consider a `--auto` flag that skips confirmation when tasks are sequential and independent.
+**Friction found and resolved:**
+- **F7:** ~~Per-task confirmation was mandatory, tedious for small changes.~~ Fixed: added `--auto` flag that skips confirmation on success.
 
 ### 7. `/sdd-verify` — Quality checks
 
-**Friction found:**
-- **F8:** The skill lists 5 checks (tests, linter, self-review, convention audit, smoke test) but doesn't specify what to do when the project has no linter configured. Should say: "Skip checks that are not configured in tech.md — do not install new tools during verify."
+**Friction found and resolved:**
+- **F8:** ~~No guidance for projects without linter/test runner configured.~~ Fixed: now checks tech.md, skips unconfigured tools with explicit report note, and never installs new tools during verify.
 
 ### 8. `/sdd-archive` — Close cycle
 
 **Friction found:**
-- **F9:** The skill says to merge delta specs into canonical specs at `openspec/specs/{domain}/spec.md`. For the first change in a new project, this means *creating* the canonical spec, not merging into one. The instruction should handle the "first spec" case explicitly: "If no canonical spec exists, copy the delta spec as the initial canonical spec."
+- None. The skill already handles the first canonical spec case: "If no canonical spec exists for the domain, create it."
 
 ## Summary of friction points
 
-| ID | Phase | Severity | Issue |
-|----|-------|----------|-------|
-| F1 | init | Medium | `sdd-env-scan.sh` path resolution doesn't work for installed skills |
-| F2 | init | Low | 454-line instruction is heavy; `--quick` mode would help |
-| F3 | explore→propose | Low | `notes.md` output path not explicitly specified in sdd-explore |
-| F6 | tasks | Low | Branch creation guidance is ambiguous |
-| F7 | apply | Low | Per-task confirmation is tedious for small changes |
-| F8 | verify | Low | No guidance for missing tools (linter not configured) |
-| F9 | archive | Medium | First-time canonical spec creation not handled |
+All friction points found during the walkthrough have been resolved.
+
+| ID | Phase | Status | Issue | Fix |
+|----|-------|--------|-------|-----|
+| F1 | init | Resolved | `sdd-env-scan.sh` path didn't resolve for installed skills | Multiple path fallbacks + manual detection |
+| F2 | init | Resolved | No quick mode for simple projects | `--quick` mode with sensible defaults |
+| F3 | explore | False positive | `notes.md` output was already specified | N/A |
+| F6 | tasks | Resolved | Branch creation guidance ambiguous | Check conventions.md for branching strategy |
+| F7 | apply | Resolved | Per-task confirmation tedious for small changes | `--auto` flag |
+| F8 | verify | Resolved | No guidance for missing tools | Check tech.md, skip with report note |
+| F9 | archive | False positive | First canonical spec was already handled | N/A |
 
 ## Files in this example
 
