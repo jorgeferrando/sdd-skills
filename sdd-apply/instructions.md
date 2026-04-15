@@ -64,64 +64,65 @@ git status          # should be clean
 git branch --show-current
 ```
 
-## Step 3: Implement task by task
+## Step 3: Implement task by task (one agent per task)
 
-For each pending task:
+For each pending task, launch a **subagent** using the Agent tool. This keeps the orchestrator context clean — implementation details (code read, attempts, test output) stay inside the agent and do not accumulate in the main conversation.
 
-### a) Announce
+### Agent prompt per task
+
+Spawn one agent per task with this information:
 
 ```
-=== Task T02/T05: {Task description} ===
-File: {path/to/file}
-```
+Implement task {TASK_ID} for change {change-name}.
 
-### b) Implement
+TASK: {full task line from tasks.md, including file path and description}
+DEPENDS ON: {list of completed task IDs this depends on, or "none"}
 
-Write code following existing project patterns. Read similar code first.
+STEERING (apply these rules throughout):
+- Read openspec/steering/conventions.md
+- Read openspec/steering/project-rules.md (if exists)
+- Read openspec/steering/tech.md (if exists)
 
-### c) Quality check
+SPEC CONTEXT:
+- Read openspec/changes/{change-name}/specs/{domain}/spec.md
+- Read openspec/changes/{change-name}/design.md (for architecture context)
 
-Run the project's test/lint commands on the changed file:
-```bash
-# Examples — use whatever your project uses:
-pytest {path/to/test}
-npm test
-go test ./...
-```
+INSTRUCTIONS:
+1. Read similar existing code in the project to follow established patterns
+2. Implement the change described in the task
+3. Run the project's test/lint commands on the changed file
+4. Fix any issues until quality checks pass
+5. Commit atomically:
+   git add {specific file}
+   git commit -m "[{change-name}] {Description in English, imperative}"
+6. Return ONLY a summary: what was done, file(s) touched, commit hash, test result (pass/fail)
 
-Fix any issues before committing. Do not proceed with failing quality checks.
-
-### d) Atomic commit
-
-```bash
-git add {specific file}
-git commit -m "$(cat <<'EOF'
-[{change-name}] {Description in English, imperative mood}
-
-Co-Authored-By: AI Assistant <noreply@sdd-skills.dev>
-EOF
-)"
-```
-
-**Commit message rules:**
-- Max 70 characters on the first line
+RULES:
+- Max 70 characters on the first line of the commit message
 - Imperative mood: "Add", "Fix", "Update" (not "Added", "Fixes")
-- Only the file(s) for this task (atomic)
+- Only commit the file(s) for this task (atomic)
+- If something unexpected comes up that is NOT covered by the task description, DO NOT make a unilateral decision — return the problem description and options instead of implementing
+```
 
-### e) Update tasks.md
+### After each agent returns
 
-Mark task as completed:
+The agent returns a short summary. The orchestrator:
+
+**a) Checks the result.** If the agent reports an unexpected situation, present it to the user with options (see Step 5).
+
+**b) Updates tasks.md.** Mark task as completed:
 ```
 - [x] **T02** ...
 ```
 
-### f) Confirm before continuing
-
+**c) Reports progress and confirms.**
 ```
-T02 completed ✓
+T02 completed ✓  ({one-line summary from agent})
 Commits: 2/5
 Continue with T03?
 ```
+
+Wait for user confirmation before launching the next agent. Do not batch multiple tasks into a single agent — one task, one agent, one commit.
 
 ## Step 4: Changes requested during apply
 

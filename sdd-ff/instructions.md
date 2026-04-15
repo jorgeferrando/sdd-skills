@@ -41,12 +41,16 @@ Create `openspec/changes/{change-name}/specs/{domain}/spec.md`:
 - Alternative cases and edge cases
 - Business rules
 
-### 4 — Design
+### 4 — Design (as agent)
 
-Create `openspec/changes/{change-name}/design.md`:
+Launch `sdd-design` as a **subagent** using the Agent tool. Design is non-interactive — it reads proposal.md, spec.md and existing code, then produces design.md. Running it as an agent keeps the FF context clean of code-reading noise.
+
+The agent creates `openspec/changes/{change-name}/design.md` with:
 - Technical architecture and files to create/modify
 - Implementation detail per file
 - Design decisions with alternatives
+
+Wait for the agent to return its summary before continuing to tasks.
 
 ### 5 — Tasks
 

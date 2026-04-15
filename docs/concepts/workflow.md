@@ -57,6 +57,7 @@ Describes **expected behavior** — not implementation. Uses Given/When/Then for
 
 **Skill:** `/sdd-design`
 **Artifact:** `design.md`
+**Execution:** runs as a **subagent** (non-interactive — reads files, produces artifact)
 
 Translates the behavior spec into a concrete **implementation plan**. Lists every file to create or modify, architecture decisions, and scope assessment. If scope exceeds 20 files, the design recommends splitting the change.
 
@@ -70,21 +71,22 @@ Breaks the design into **atomic tasks**. Each task corresponds to one file and o
 ### 6. Apply
 
 **Skill:** `/sdd-apply`
+**Execution:** orchestrator spawns **one agent per task**
 
-Implements code **task by task**. For each task:
+Implements code task by task. Each task runs in its own subagent to keep the orchestrator context clean:
 
-1. Write code following project patterns and steering conventions
-2. Run quality checks on the changed file
-3. Commit atomically: `[change-name] Description`
-4. Mark task as done in `tasks.md`
+1. Agent reads similar code, implements the change, runs quality checks, commits atomically
+2. Agent returns a summary (files touched, commit hash, test result)
+3. Orchestrator marks task as done, asks user before launching the next agent
 
 Nothing is implemented without being tracked. Unplanned work gets registered as `BUGxx` or `IMPxx` before implementation.
 
 ### 7. Verify
 
 **Skill:** `/sdd-verify`
+**Execution:** runs as a **subagent** (non-interactive — runs checks, produces report)
 
-Final validation: full test suite, linter, self-review checklist, and smoke test (for UI projects). All checks must pass before proceeding.
+Final validation: full test suite, linter, self-review checklist, convention audit, and smoke test (for UI projects). All checks must pass before proceeding. Creates the PR.
 
 ### 8. Archive
 

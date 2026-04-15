@@ -15,15 +15,15 @@
 
 ## What it does
 
-Runs four phases without pausing between them:
+Runs five phases without pausing between them:
 
 1. **Explore** — quick codebase exploration
-2. **Propose** — creates `proposal.md`
+2. **Propose** — creates `proposal.md` (asks questions if gaps found)
 3. **Spec** — creates `specs/{domain}/spec.md`
-4. **Design** — creates `design.md`
+4. **Design** — creates `design.md` (runs as **agent** to keep context clean)
 5. **Tasks** — creates `tasks.md`
 
-If ambiguity is found at any point, the AI pauses to ask, then continues.
+Design runs as a subagent because it is non-interactive and reads substantial code. The FF context stays focused on the interactive phases (propose, spec, tasks). If ambiguity is found at any point, the AI pauses to ask, then continues.
 
 ## When to use
 

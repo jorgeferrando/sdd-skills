@@ -92,9 +92,9 @@ It also creates `config.yaml` with the openspec paths and the directory structur
 
 **Why:** Continue sees that proposal.md and spec.md exist, but not design.md. It deduces that the pending phase is design.
 
-**What it does:** Design reads both proposal.md and spec.md, plus existing code that follows similar patterns. It translates the specified behavior into a concrete technical plan: which files to create, which to modify, what architecture to use, what dependencies exist between the changes. It includes a scope analysis — if the change touches more than 20 files, it proposes splitting before continuing. It generates `openspec/changes/{change-name}/design.md` with architecture diagrams, file tables, and technical decisions with discarded alternatives.
+**What it does:** Continue launches design as a **subagent** — design is non-interactive (it reads files and produces an artifact, no user questions needed), so running it in an agent keeps the main conversation free of code-reading noise. The agent reads proposal.md, spec.md, and existing code that follows similar patterns. It translates the specified behavior into a concrete technical plan: which files to create, which to modify, what architecture to use, what dependencies exist between the changes. It includes a scope analysis — if the change touches more than 20 files, it proposes splitting before continuing. It generates `openspec/changes/{change-name}/design.md` with architecture diagrams, file tables, and technical decisions with discarded alternatives. The orchestrator receives a summary, not the full analysis.
 
-**How to advance:** Design is presented to the user. If the technical approach is correct and all affected files are identified, approve it and run `/sdd-continue`.
+**How to advance:** The design summary is presented to the user. If the technical approach is correct and all affected files are identified, approve it and run `/sdd-continue`.
 
 **Why design after spec:** Spec says *what* the system must do. Design says *how* to implement it technically. This is a deliberate separation: you can have the same spec implemented with different architectures. Separating spec from design lets you discuss behavior without contaminating the conversation with implementation decisions, and vice versa.
 
@@ -124,21 +124,23 @@ It also creates `config.yaml` with the openspec paths and the directory structur
 
 **Why:** Continue sees that tasks.md exists with pending `[ ]` items. It deduces that the phase is apply. If there are partially completed tasks (`[x]` and `[ ]`), it passes the next pending ID (e.g. `T03`) to apply.
 
-**What it does:** Apply is the actual implementation phase. Before touching code, it verifies that `conventions.md` exists (it refuses to start without it) and silently loads all steering (`conventions.md`, `project-rules.md`, `tech.md`) to apply project rules throughout implementation. Then, task by task:
+**What it does:** Apply is the actual implementation phase. Before touching code, it verifies that `conventions.md` exists (it refuses to start without it) and loads all steering. Then, for each task, it launches a **subagent**:
 
-1. Announces what it will do (T02/T05: description)
-2. Reads similar existing code to follow patterns
-3. Implements the change
-4. Runs tests/lint on the modified file
-5. Makes an atomic commit with format `[{change-name}] Description`
-6. Marks `[x]` in tasks.md
-7. Asks for confirmation before moving to the next task
+The **agent per task** receives the task description, steering files, and spec context. It:
+
+1. Reads similar existing code to follow patterns
+2. Implements the change
+3. Runs tests/lint on the modified file
+4. Makes an atomic commit with format `[{change-name}] Description`
+5. Returns a short summary (what was done, files touched, commit hash, test result)
+
+The **orchestrator** (the main conversation) stays clean — it only sees summaries, not the code that each agent read or the test output. Between tasks, it marks `[x]` in tasks.md and asks for confirmation before launching the next agent.
 
 If the user requests an unplanned change, apply registers it as BUG01/IMP01 in tasks.md before implementing. tasks.md is the single source of truth for everything that was done.
 
 **How to advance:** When all tasks are `[x]`, apply shows a summary and suggests `/sdd-verify`.
 
-**Why apply after tasks:** Apply does not decide what to implement or in what order — it just executes. All planning happened in previous phases. This lets apply be mechanical and predictable: follow the list, commit by commit, with no architecture decisions in the middle of implementation.
+**Why apply after tasks:** Apply does not decide what to implement or in what order — it just executes. All planning happened in previous phases. This lets apply be mechanical and predictable: follow the list, commit by commit, with no architecture decisions in the middle of implementation. The per-task agent pattern scales well — a change with 12 tasks does not degrade the orchestrator's context.
 
 ```
 /sdd-continue
@@ -150,7 +152,7 @@ If the user requests an unplanned change, apply registers it as BUG01/IMP01 in t
 
 **Why:** Continue sees that all tasks are `[x]` and the working tree has changes relative to main. It deduces that the phase is verify.
 
-**What it does:** Verify is the final quality gate. It runs in sequence:
+**What it does:** Continue launches verify as a **subagent** — like design, verify is non-interactive (runs checks, produces a report). The agent runs in sequence:
 
 1. **Full tests** — the project's entire test suite, not just the changed files
 2. **Linters/formatters** — on changed files, with fix+commit if there are issues

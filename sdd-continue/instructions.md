@@ -47,22 +47,40 @@ The **first NOT DONE phase** is the one to execute.
 
 ## Step 3: Execute the skill
 
-| Detected phase | Skill to run |
-|---------------|--------------|
-| `propose` | `sdd-propose` |
-| `spec` | `sdd-spec` |
-| `design` | `sdd-design` |
-| `tasks` | `sdd-tasks` |
-| `apply` | `sdd-apply` (with next task ID if partial) |
-| `verify` | `sdd-verify` |
-| all DONE | Inform → `/sdd-archive` |
+| Detected phase | Skill to run | Execution mode |
+|---------------|--------------|----------------|
+| `propose` | `sdd-propose` | **inline** (interactive — asks user questions) |
+| `spec` | `sdd-spec` | **inline** (interactive — clarifies edge cases with user) |
+| `design` | `sdd-design` | **agent** (non-interactive — reads files, produces design.md) |
+| `tasks` | `sdd-tasks` | **inline** (interactive — user validates order) |
+| `apply` | `sdd-apply` (with next task ID if partial) | **inline** (apply manages its own per-task agents) |
+| `verify` | `sdd-verify` | **agent** (non-interactive — runs checks, creates PR) |
+| all DONE | Inform → `/sdd-archive` | — |
 
-Always announce what phase is being executed:
+### Inline execution
+
+For interactive phases (propose, spec, tasks, apply): follow the skill instructions directly in the current conversation. The user needs to answer questions and provide feedback.
+
+### Agent execution
+
+For non-interactive phases (design, verify): launch the skill as a **subagent** using the Agent tool. This keeps the orchestrator context clean — the code analysis, test output, and check details stay inside the agent.
+
+**Agent prompt template:**
+```
+Execute sdd-{phase} for change "{change-name}" at openspec/changes/{change-name}/.
+Follow the instructions in the sdd-{phase} skill exactly.
+Read all required input files (proposal.md, specs, design.md, steering files) as specified.
+Return a concise summary of what was produced and any issues found.
+```
+
+When the agent returns, present its summary to the user. If the agent reports issues, discuss them before continuing.
+
+### Always announce
 
 ```
 Detected phase: DESIGN
 Change: {change-name}
-Running sdd-design...
+Running sdd-design (as agent — context stays clean)...
 ```
 
 ## Notes

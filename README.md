@@ -86,16 +86,16 @@ For a detailed walkthrough of each step — why it runs, what it produces, and h
 
 Every feature, bugfix, or refactor follows the same cycle:
 
-| Phase | Skill | Artifact | Purpose |
-|-------|-------|----------|---------|
-| 1. Explore | `/sdd-explore` | (none) | Read-only codebase exploration |
-| 2. Propose | `/sdd-propose` | `proposal.md` | Define the problem and proposed solution |
-| 3. Spec | `/sdd-spec` | `specs/{domain}/spec.md` | Describe expected behavior (not implementation) |
-| 4. Design | `/sdd-design` | `design.md` | Translate spec into implementation plan |
-| 5. Tasks | `/sdd-tasks` | `tasks.md` | Break design into atomic tasks (1 task = 1 commit) |
-| 6. Apply | `/sdd-apply` | code + commits | Implement task by task |
-| 7. Verify | `/sdd-verify` | test results | Run tests, lint, self-review checklist |
-| 8. Archive | `/sdd-archive` | canonical specs | Close cycle, merge specs, move to archive |
+| Phase | Skill | Artifact | Mode |
+|-------|-------|----------|------|
+| 1. Explore | `/sdd-explore` | `notes.md` | Inline |
+| 2. Propose | `/sdd-propose` | `proposal.md` | Inline (interactive) |
+| 3. Spec | `/sdd-spec` | `specs/{domain}/spec.md` | Inline (interactive) |
+| 4. Design | `/sdd-design` | `design.md` | Agent (non-interactive) |
+| 5. Tasks | `/sdd-tasks` | `tasks.md` | Inline (interactive) |
+| 6. Apply | `/sdd-apply` | code + commits | Agent per task |
+| 7. Verify | `/sdd-verify` | report + PR | Agent (non-interactive) |
+| 8. Archive | `/sdd-archive` | canonical specs | Inline |
 
 All artifacts live under `openspec/changes/{change-name}/`.
 

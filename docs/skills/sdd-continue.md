@@ -13,15 +13,17 @@
 
 Checks which artifacts exist in the change directory and runs the next skill:
 
-| Missing artifact | Runs |
-|-----------------|------|
-| No `proposal.md` | `/sdd-propose` |
-| No `specs/` | `/sdd-spec` |
-| No `design.md` | `/sdd-design` |
-| No `tasks.md` | `/sdd-tasks` |
-| Pending tasks in `tasks.md` | `/sdd-apply` (from next pending task) |
-| All tasks done, clean tree | `/sdd-verify` |
-| Everything complete | Suggests `/sdd-archive` |
+| Missing artifact | Runs | Mode |
+|-----------------|------|------|
+| No `proposal.md` | `/sdd-propose` | Inline (interactive) |
+| No `specs/` | `/sdd-spec` | Inline (interactive) |
+| No `design.md` | `/sdd-design` | **Agent** (non-interactive) |
+| No `tasks.md` | `/sdd-tasks` | Inline (interactive) |
+| Pending tasks in `tasks.md` | `/sdd-apply` | Inline (manages own agents) |
+| All tasks done, clean tree | `/sdd-verify` | **Agent** (non-interactive) |
+| Everything complete | Suggests `/sdd-archive` | — |
+
+**Why agents for some phases?** Design and verify are non-interactive — they read files, analyze code, and produce artifacts without needing user input. Running them as agents keeps the orchestrator context free of code-reading and test-output noise. Interactive phases (propose, spec, tasks) stay inline because the user needs to answer questions and give feedback.
 
 If multiple active changes exist and no name is provided, prompts the user to choose.
 

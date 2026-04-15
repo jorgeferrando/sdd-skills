@@ -29,14 +29,24 @@ Before writing any code, the AI reads:
 
 All rules are applied throughout the implementation. This is what makes `/sdd-apply` project-aware despite being a generic skill.
 
-### For each pending task
+### For each pending task (one agent per task)
 
-1. **Announce** — shows task ID, description, and target file
-2. **Implement** — writes code following existing patterns and steering conventions
-3. **Quality check** — runs test/lint commands on the changed file
-4. **Atomic commit** — `git add {file}` + `git commit -m "[change-name] Description"`
-5. **Update tasks.md** — marks task as `[x]`
-6. **Confirm** — asks before continuing to next task
+Each task is implemented by a **subagent** to keep the main conversation clean. The orchestrator does not accumulate code-reading, test output, or implementation details — only the summary from each agent.
+
+**Agent per task:**
+
+1. Receives the task description, file path, steering files, and spec context
+2. Reads similar existing code to follow patterns
+3. Implements the change
+4. Runs quality checks on the changed file
+5. Commits atomically: `[change-name] Description`
+6. Returns a short summary (what was done, files touched, commit hash, test result)
+
+**Orchestrator between tasks:**
+
+1. Checks the agent result
+2. Marks task as `[x]` in tasks.md
+3. Reports progress and asks before continuing to the next task
 
 ### Unplanned work
 
