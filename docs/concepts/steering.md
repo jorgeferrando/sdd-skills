@@ -147,10 +147,15 @@ No new agents, no new phases — same workflow, more knowledge.
 
 ### Available specialists
 
-| Specialist | What it adds |
-|-----------|-------------|
-| **anti-overengineering** | Rules against premature abstractions, unnecessary patterns, speculative design |
-| **testing** | Proper test doubles (stub vs mock vs fake), no redundant tests, behavior-focused assertions |
+| Specialist | Severity | What it adds |
+|-----------|----------|-------------|
+| **accessibility** | Important | WCAG 2.1 AA — semantic HTML, ARIA, keyboard navigation, contrast, focus management |
+| **anti-overengineering** | Important | Rules against premature abstractions, unnecessary patterns, speculative design |
+| **performance** | Important | N+1 prevention, pagination, async I/O, lazy loading, indexed queries |
+| **readability** | Important | Descriptive naming, clear structure, guard clauses, no abbreviations |
+| **security** | Critical | OWASP top 10 — injection, auth, secrets, input validation, access control |
+| **tdd** | Critical | Enforces Red/Green/Refactor cycle, changes task ordering (test before code) |
+| **testing** | Important | Proper test doubles (stub vs mock vs fake), no redundant tests, behavior-focused assertions |
 
 ### Installing a specialist
 
@@ -159,6 +164,7 @@ No new agents, no new phases — same workflow, more knowledge.
 ./install-specialist.sh                        # list available
 ./install-specialist.sh anti-overengineering    # install one
 ./install-specialist.sh --all                   # install all
+./install-specialist.sh --installed             # list installed
 ./install-specialist.sh --remove testing        # remove one
 ```
 
