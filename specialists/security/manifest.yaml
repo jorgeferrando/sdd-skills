@@ -1,0 +1,5 @@
+name: security
+description: OWASP-aware security advisor — injection prevention, authentication, secrets management, input validation, and secure defaults. Classifies vulnerabilities as Critical.
+applies_to: all
+files:
+  - conventions-security.md → openspec/steering/conventions-security.md
