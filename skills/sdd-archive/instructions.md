@@ -2,7 +2,7 @@
 name: sdd-archive
 description: SDD Archive - Close the change cycle. Move the change to the archive and update canonical specs. Usage - /sdd-archive or /sdd-archive {change-name}.
 requires: ["openspec/changes/{change}/tasks.md", "openspec/changes/{change}/specs/*/spec.md"]
-produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md", "openspec/changes/archive/"]
+produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md", "openspec/changes/archive/", "openspec/steering/learnings.md"]
 ---
 
 # SDD Archive
@@ -106,7 +106,57 @@ ls openspec/changes/archive/  # change should appear here
 ls openspec/specs/            # canonical specs updated
 ```
 
-## Step 5: Summary
+## Step 5: Update learnings
+
+Append a new entry to `openspec/steering/learnings.md` (create the file if it doesn't exist).
+
+Reflect on what happened during this change cycle and extract useful signals. Write only what is non-obvious and would help future changes — skip boilerplate.
+
+Look at:
+- Alternatives discarded in `design.md` — why were they rejected?
+- Tasks that were re-opened or re-done — what assumption was wrong?
+- Domains that were touched unexpectedly — are they coupled?
+- Conventions that were violated and then corrected — should they be explicit?
+- Any recurring pattern that appeared in this change for the second time or more
+
+Append to `openspec/steering/learnings.md`:
+
+```markdown
+## {YYYY-MM-DD} — {change-name}
+
+**Domains touched:** {domain1}, {domain2}
+
+**Decisions:**
+- {What was decided and why — especially if it contradicts what someone might naturally do}
+
+**Discarded alternatives:**
+- {Alternative} — {reason it was rejected}
+
+**Unexpected couplings:**
+- {module A} ↔ {module B}: {why they turned out to be linked}
+
+**Anti-patterns confirmed:**
+- {What not to do here} — {observed consequence}
+
+**Open questions:**
+- {Something that was deferred or left unresolved}
+```
+
+Omit any section that has nothing meaningful to say. Do not pad with generic observations.
+
+If `openspec/steering/learnings.md` does not exist, create it with this header first:
+
+```markdown
+# Project Learnings
+
+> Incremental memory. Appended by sdd-archive after each change cycle.
+> Read by sdd-recall before searching the archive.
+> Each entry captures non-obvious decisions, couplings, and anti-patterns.
+
+---
+```
+
+## Step 6: Summary
 
 ```
 ARCHIVE COMPLETE: {change-name}
@@ -116,6 +166,9 @@ Archived at:
 
 Canonical specs updated:
   openspec/specs/{domain}/spec.md ✓
+
+Learnings updated:
+  openspec/steering/learnings.md ✓
 
 Active changes remaining: N
 ```
