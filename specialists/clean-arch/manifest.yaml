@@ -1,0 +1,5 @@
+name: clean-arch
+description: Clean architecture advisor — enforces domain/application/infrastructure layer separation, dependency inversion, and port/adapter isolation so business logic never depends on frameworks or external services.
+applies_to: typescript-projects
+files:
+  - conventions-clean-arch.md → openspec/steering/conventions-clean-arch.md

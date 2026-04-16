@@ -1,0 +1,5 @@
+name: result-pattern
+description: Result/Either monad advisor — models expected errors as values, reserves try/catch for infrastructure boundaries, and eliminates implicit throws from domain and application code.
+applies_to: typescript-projects
+files:
+  - conventions-result.md → openspec/steering/conventions-result.md

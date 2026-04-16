@@ -1,0 +1,5 @@
+name: nodejs-patterns
+description: Node.js performance and functional design advisor — event loop awareness, immutability, pure functions, no shared mutable state, stream backpressure, and worker threads for CPU-bound work.
+applies_to: node-projects
+files:
+  - conventions-nodejs.md → openspec/steering/conventions-nodejs.md

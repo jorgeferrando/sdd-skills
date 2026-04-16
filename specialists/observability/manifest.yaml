@@ -1,0 +1,5 @@
+name: observability
+description: Observability advisor — structured logging, log levels, correlation IDs, what to log and what never to log, and how to trace async operations across pipeline phases.
+applies_to: node-projects
+files:
+  - conventions-observability.md → openspec/steering/conventions-observability.md

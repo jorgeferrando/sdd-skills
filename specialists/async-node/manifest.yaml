@@ -1,0 +1,5 @@
+name: async-node
+description: Node.js async/concurrency advisor — async/await correctness, unhandled rejections, child_process safety, stream handling, and timeout discipline for Node.js backends.
+applies_to: node-projects
+files:
+  - conventions-async.md → openspec/steering/conventions-async.md

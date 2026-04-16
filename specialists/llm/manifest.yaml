@@ -1,0 +1,5 @@
+name: llm
+description: LLM integration advisor — prompt construction, response validation, context management, prompt injection prevention, and model selection for projects that call Claude or other LLMs.
+applies_to: llm-projects
+files:
+  - conventions-llm.md → openspec/steering/conventions-llm.md
