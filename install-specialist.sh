@@ -29,6 +29,7 @@ if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     echo "    ./install-specialist.sh                # list available specialists"
     echo "    ./install-specialist.sh <name>          # install a specialist"
     echo "    ./install-specialist.sh --all           # install all specialists"
+    echo "    ./install-specialist.sh --installed      # list installed specialists"
     echo "    ./install-specialist.sh --remove <name> # remove a specialist"
     echo ""
     echo "  Specialists add domain-specific conventions to openspec/steering/"
@@ -61,6 +62,44 @@ if [[ $# -eq 0 ]]; then
         echo ""
     done
     echo "  Run: ./install-specialist.sh <name>"
+    exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# List installed
+# ---------------------------------------------------------------------------
+
+if [[ "${1:-}" == "--installed" ]]; then
+    if [[ ! -d "$TARGET_DIR" ]]; then
+        echo "openspec/steering/ not found. No specialists installed."
+        exit 0
+    fi
+
+    found=0
+    for dir in "$SPECIALISTS_DIR"/*/; do
+        [[ -f "$dir/manifest.yaml" ]] || continue
+        name=$(basename "$dir")
+        desc=$(grep "^description:" "$dir/manifest.yaml" | sed 's/^description:[[:space:]]*//')
+
+        for f in "$dir"/*.md; do
+            fname=$(basename "$f")
+            if [[ -f "$TARGET_DIR/$fname" ]]; then
+                echo -e "  ${GREEN}✓${RESET}  ${CYAN}$name${RESET}"
+                echo -e "     ${DIM}$desc${RESET}"
+                echo -e "     ${DIM}→ $TARGET_DIR/$fname${RESET}"
+                echo ""
+                ((found+=1))
+                break
+            fi
+        done
+    done
+
+    if [[ $found -eq 0 ]]; then
+        echo "  No specialists installed."
+        echo "  Run: ./install-specialist.sh <name>"
+    else
+        echo "  $found specialist(s) installed."
+    fi
     exit 0
 fi
 
