@@ -1,0 +1,5 @@
+name: performance
+description: Prevents common performance pitfalls — N+1 queries, unbounded data loading, missing pagination, unnecessary computation. Not premature optimization, just avoiding known traps.
+applies_to: all
+files:
+  - conventions-performance.md → openspec/steering/conventions-performance.md

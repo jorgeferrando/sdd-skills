@@ -1,0 +1,5 @@
+name: accessibility
+description: WCAG-aware accessibility advisor — semantic HTML, ARIA, keyboard navigation, contrast, screen reader support. For projects with user-facing UI.
+applies_to: ["react", "angular", "vue", "svelte", "html", "frontend"]
+files:
+  - conventions-accessibility.md → openspec/steering/conventions-accessibility.md
