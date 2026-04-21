@@ -1,6 +1,7 @@
 ---
 name: sdd-archive
 description: SDD Archive - Close the change cycle. Move the change to the archive and update canonical specs. Usage - /sdd-archive or /sdd-archive {change-name}.
+model_hint: haiku
 requires: ["openspec/changes/{change}/tasks.md", "openspec/changes/{change}/specs/*/spec.md"]
 produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md", "openspec/changes/archive/", "openspec/steering/learnings.md"]
 ---
@@ -8,6 +9,8 @@ produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md", "openspec/changes/ar
 # SDD Archive
 
 > Close the SDD cycle. Move the change to the archive and merge specs into the canonical ones.
+
+**Output style:** terse. One-line status per step. No prose.
 
 ## Usage
 

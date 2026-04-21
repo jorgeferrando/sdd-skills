@@ -1,6 +1,7 @@
 ---
 name: sdd-continue
 description: SDD Continue - Detect the next pending phase and execute it. Equivalent to "what's next?". Usage - /sdd-continue or /sdd-continue {change-name}.
+model_hint: haiku
 requires: ["openspec/changes/"]
 produces: []
 ---
@@ -49,15 +50,17 @@ The **first NOT DONE phase** is the one to execute.
 
 ## Step 3: Execute the skill
 
-| Detected phase | Skill to run | Execution mode |
-|---------------|--------------|----------------|
-| `propose` | `sdd-propose` | **inline** (interactive — asks user questions) |
-| `spec` | `sdd-spec` | **inline** (interactive — clarifies edge cases with user) |
-| `design` | `sdd-design` | **agent** (non-interactive — reads files, produces design.md) |
-| `tasks` | `sdd-tasks` | **inline** (interactive — user validates order) |
-| `apply` | `sdd-apply` (with next task ID if partial) | **inline** (apply manages its own per-task agents) |
-| `verify` | `sdd-verify` | **agent** (non-interactive — runs checks, creates PR) |
-| all DONE | Inform → `/sdd-archive` | — |
+| Detected phase | Skill to run | Execution mode | Model hint |
+|---------------|--------------|----------------|------------|
+| `propose` | `sdd-propose` | **inline** (interactive) | opus |
+| `spec` | `sdd-spec` | **inline** (interactive) | sonnet |
+| `design` | `sdd-design` | **agent** (non-interactive) | opus |
+| `tasks` | `sdd-tasks` | **inline** (interactive) | haiku |
+| `apply` | `sdd-apply` | **inline** (manages own agents) | haiku (orchestrator), sonnet (subagents) |
+| `verify` | `sdd-verify` | **agent** (non-interactive) | sonnet |
+| all DONE | Inform → `/sdd-archive` | — | — |
+
+When spawning a subagent, pass the `model` parameter matching the skill's `model_hint` frontmatter. If the tool does not support model selection, ignore the hint.
 
 ### Inline execution
 

@@ -1,6 +1,7 @@
 ---
 name: sdd-explore
 description: SDD Explore - Read-only codebase exploration to understand context before proposing changes. Used as part of /sdd-new or /sdd-continue. Usage - /sdd-explore "what to look for".
+model_hint: sonnet
 requires: ["openspec/config.yaml"]
 produces: ["openspec/changes/{change}/notes.md"]
 ---
@@ -8,6 +9,8 @@ produces: ["openspec/changes/{change}/notes.md"]
 # SDD Explore
 
 > Read-only exploration of the codebase to understand context before proposing changes.
+
+**Output style:** terse. Bullet lists for files and patterns. No prose in summaries.
 
 ## Usage
 
@@ -37,6 +40,8 @@ If matches are found, include them in the output under "Prior decisions". If no 
   then load only those spec files from `openspec/specs/`
 
 ## Output
+
+**Write all artifacts in English** for token efficiency and searchability.
 
 Write findings to `openspec/changes/{change-name}/notes.md` so downstream skills (especially `sdd-propose`) can reference them across sessions:
 

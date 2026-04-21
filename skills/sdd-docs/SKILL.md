@@ -1,6 +1,7 @@
 ---
 name: sdd-docs
 description: SDD Docs - Generate MkDocs documentation from openspec/ using AI. Run sdd-docs --fill --force to produce publishable docs without placeholders. Usage - /sdd-docs.
+model_hint: haiku
 requires: ["openspec/specs/"]
 produces: ["docs/"]
 ---

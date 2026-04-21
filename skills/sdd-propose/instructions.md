@@ -1,6 +1,7 @@
 ---
 name: sdd-propose
 description: SDD Propose - Create proposal.md for a new change. Analyzes input completeness, asks clarifying questions to fill gaps, then generates a complete proposal. Usage - /sdd-propose "description" or as part of /sdd-new.
+model_hint: opus
 requires: ["openspec/config.yaml"]
 produces: ["openspec/changes/{change}/proposal.md"]
 ---
@@ -66,6 +67,8 @@ For every section marked **missing**, ask the user using `AskUserQuestion`. Grou
 **Repeat** this step until all sections are **covered** or **inferable**. Do not proceed to Step 5 with any section still **missing**.
 
 ## Step 5: Generate proposal.md
+
+**Write all artifacts in English.** English uses fewer tokens than other languages for the same content, making downstream processing more efficient.
 
 Only when all sections are covered, create `openspec/changes/{change-name}/proposal.md`:
 

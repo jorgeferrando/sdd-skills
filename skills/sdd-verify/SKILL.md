@@ -1,6 +1,7 @@
 ---
 name: sdd-verify
 description: SDD Verify - Final validation before PR. Run tests, quality checks, and self-review checklist. Usage - /sdd-verify or /sdd-verify {change-name}.
+model_hint: sonnet
 requires: ["openspec/changes/{change}/tasks.md"]
 produces: []
 ---
@@ -8,6 +9,8 @@ produces: []
 # SDD Verify
 
 > Final validation before creating the PR. Tests + quality checks + self-review.
+
+**Output style:** terse. Report pass/fail per check. No prose, no repeated info.
 
 ## Usage
 

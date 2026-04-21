@@ -1,6 +1,7 @@
 ---
 name: sdd-agent
 description: SDD Agent - Autonomous orchestrator that executes the full SDD cycle for a given task. Interacts via chat (Slack, web, or terminal) when it needs input. Usage - /sdd-agent "task description" or triggered by external systems.
+model_hint: sonnet
 requires: ["openspec/config.yaml"]
 produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/specs/*/spec.md", "openspec/changes/{change}/design.md", "openspec/changes/{change}/tasks.md"]
 ---
@@ -21,6 +22,18 @@ produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/s
 
 - `openspec/` initialized (if not, runs `sdd-init --quick` automatically)
 - Git repo with clean working tree
+
+## Model selection
+
+Each sub-skill declares a `model_hint` in its frontmatter. When spawning subagents, use the hint to select the most cost-effective model:
+
+| Hint | Model | Use for |
+|------|-------|---------|
+| `opus` | Most capable | Judgment-heavy phases: propose, design |
+| `sonnet` | Balanced | Code comprehension: explore, spec, apply subagents, verify, audit, steer |
+| `haiku` | Fastest/cheapest | Mechanical phases: tasks, archive, recall, docs, continue, apply orchestrator |
+
+Pass `model: "{model_hint}"` when spawning each subagent. If the tool does not support model selection, ignore the hint and proceed with the default model.
 
 ## Confidence model
 
@@ -53,13 +66,15 @@ The task is broad. To proceed, I need to know:
 - What is the target? (e.g., < 200ms response, 50% reduction)
 ```
 
-## Step 2: Bootstrap (if needed)
+## Step 2: Bootstrap + load steering
 
 ```bash
 ls openspec/steering/conventions.md
 ```
 
 If missing, run `sdd-init --quick` to bootstrap openspec/ with sensible defaults. Do not ask — a junior sets up their workspace without being told.
+
+**Prompt caching**: read all steering files once here (conventions.md, project-rules.md, tech.md, relevant specialists). Pass this content as a fixed prefix in all subsequent subagent prompts. This ensures cache hits across the sequential agents in Steps 4-8.
 
 ## Step 3: Explore with recall
 
@@ -75,87 +90,19 @@ I found a previous spec for this domain that explicitly excluded {X}.
 Your task seems to include {X}. Should I proceed including it, or respect the previous boundary?
 ```
 
-## Step 4: Propose
+## Steps 4-8: Execute SDD phases
 
-Run the `sdd-propose` workflow:
-1. Analyze the task against all proposal sections
-2. For sections marked **missing**: ask via chat (group questions, max 3 at a time)
-3. For sections marked **inferable**: use best judgment, mark as "inferred" in the proposal
-4. Generate `proposal.md`
+Run each phase using the corresponding skill instructions. Use the `model_hint` from each skill's frontmatter when spawning subagents.
 
-**Confidence check:** Show the proposal summary in chat:
-```
-Proposal ready for: {change-name}
-Scope: {N} files, {domains}
-Key decisions:
-  - {decision 1}
-  - {decision 2}
+| Step | Skill | Mode | Confidence check |
+|------|-------|------|-----------------|
+| 4. Propose | `sdd-propose` | inline | Show proposal summary in chat, wait for approval before continuing |
+| 5. Spec | `sdd-spec` | inline | Ask about business logic edge cases only; technical decisions follow conventions |
+| 6. Design + Tasks | `sdd-design` (agent) → `sdd-tasks` (inline) | agent+inline | If > 10 files: ask whether to proceed, split, or hand off |
+| 7. Apply | `sdd-apply --auto` | inline | Report progress per task; if a task fails after 1 retry, ask with context |
+| 8. Verify | `sdd-verify` | agent | Do not create the PR — the orchestrator creates it in Step 9 |
 
-Should I continue to spec, or do you want to adjust anything?
-```
-
-Wait for response. If approved (or no response in the configured timeout), continue.
-
-## Step 5: Spec
-
-Run the `sdd-spec` workflow:
-1. Read proposal, identify domain
-2. Check for canonical spec (delta if exists)
-3. For edge cases that affect business logic: ask via chat
-4. For technical edge cases with clear conventions: decide and document
-
-**Confidence check:** Only ask about business logic. Technical decisions follow conventions.
-
-## Step 6: Design + Tasks
-
-Run `sdd-design` as agent (non-interactive), then `sdd-tasks`:
-1. Design reads proposal + spec + codebase, produces design.md
-2. Tasks breaks design into atomic tasks with dependencies
-
-**Confidence check:** If scope analysis shows > 10 files:
-```
-This change affects {N} files. That's larger than typical for autonomous work.
-Options:
-1. Proceed (I'll handle it in {N} tasks)
-2. Split into smaller changes (I'll propose how to split)
-3. Stop here — you take over from design.md
-```
-
-## Step 7: Apply
-
-Run `sdd-apply --auto`:
-1. Load steering (conventions, project-rules, tech)
-2. For each task, spawn a subagent
-3. Each subagent: implement, test, commit atomically
-4. Report progress in chat after each task
-
-```
-Progress: T03/T05 ✓ Add rate limit middleware
-  Commit: a1b2c3d
-  Tests: 8/8 pass
-```
-
-**If a task fails (test failure, unexpected situation):**
-1. Retry once with a different approach
-2. If still failing: ask via chat with context
-```
-T04 failing: test_rate_limit_exceeded expects 429 but getting 200.
-The middleware is not being applied to the route. I see two possible causes:
-1. Route registration order — middleware runs after the handler
-2. Missing middleware import in routes/index.js
-Which should I investigate first, or should I try both?
-```
-
-## Step 8: Verify
-
-Run `sdd-verify`:
-1. Full test suite
-2. Linter (if configured)
-3. Self-review checklist
-4. Convention audit
-5. If the project has a dev server: start it, run smoke tests against acceptance criteria
-
-**Do not create the PR in this step** — the orchestrator creates it with the full context.
+Between phases, apply the **confidence model** above. At LOW confidence on any phase, stop and ask.
 
 ## Step 9: Create PR
 
@@ -236,24 +183,11 @@ Repeat until the PR is approved or the user stops the agent.
 
 ## Escalation protocol
 
-**Always ask when:**
-- Business logic is ambiguous (not technical — business)
-- Scope changes beyond what was proposed
-- Tests fail after 2 attempts
-- Review comment requests architectural change
-- Confidence is LOW on any phase
+**Ask** when: business logic is ambiguous, scope changes beyond proposal, tests fail after 2 attempts, review requests architectural change, or confidence is LOW.
 
-**Never ask when:**
-- Technical decisions covered by conventions.md
-- Code style choices covered by project-rules.md
-- Test structure follows existing patterns
-- Error handling follows established patterns
+**Don't ask** when: covered by conventions.md, project-rules.md, or existing patterns.
 
-**How to ask:**
-- Be specific, not vague ("Should X return 404 or 204?" not "What should X do?")
-- Offer options with trade-offs
-- Include context from the codebase
-- Max 3 questions at a time
+**How**: be specific ("Should X return 404 or 204?"), offer options with trade-offs, max 3 questions at a time.
 
 ## Notes
 

@@ -1,6 +1,7 @@
 ---
 name: sdd-recall
 description: SDD Recall - Search archived specs and past decisions for context relevant to the current problem. Usage - /sdd-recall "query" or /sdd-recall {domain} or /sdd-recall compact.
+model_hint: haiku
 requires: ["openspec/specs/"]
 produces: []
 ---
@@ -8,6 +9,8 @@ produces: []
 # SDD Recall
 
 > Search archived specs, canonical specs, and past design decisions for context relevant to a new change.
+
+**Output style:** terse. Bullet points per source. Show only relevant excerpts, not full spec sections.
 
 ## Usage
 

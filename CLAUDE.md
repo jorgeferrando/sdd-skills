@@ -14,6 +14,7 @@ Every skill lives in `skills/sdd-{name}/instructions.md` with this structure:
 ---
 name: sdd-{name}
 description: SDD {Name} - {one-line description}. Usage - /sdd-{name} or /sdd-{name} {args}.
+model_hint: opus|sonnet|haiku
 ---
 
 # SDD {Name}
@@ -38,13 +39,43 @@ description: SDD {Name} - {one-line description}. Usage - /sdd-{name} or /sdd-{n
 ```
 
 Rules:
-- Frontmatter MUST have `name` and `description` fields
+- Frontmatter MUST have `name`, `description`, and `model_hint` fields
 - Description MUST include usage syntax
 - Steps MUST be numbered and sequential
 - Each skill MUST end with a "Next Step" section pointing to the next skill in the workflow
 - Skills reference `openspec/` paths — never hardcode project-specific or tool-specific paths
 - All content MUST be in English
 - Do not reference any specific LLM by name in instructions (use "the AI" or "the assistant")
+
+## Token optimization
+
+Skills include several strategies to minimize token usage:
+
+### Model hints (`model_hint` frontmatter field)
+
+Each skill declares the minimum model tier needed. Orchestrators (`sdd-agent`, `sdd-ff`, `sdd-continue`) pass this hint when spawning subagents.
+
+| Hint | Use for | Skills |
+|------|---------|--------|
+| `opus` | Judgment-heavy: design decisions, solution proposals | sdd-propose, sdd-design |
+| `sonnet` | Comprehension: code analysis, spec writing, implementation | sdd-explore, sdd-spec, sdd-apply (subagents), sdd-verify, sdd-audit, sdd-steer, sdd-init, sdd-new, sdd-ff, sdd-discover, sdd-agent |
+| `haiku` | Mechanical: template-filling, search, dispatch | sdd-tasks, sdd-archive, sdd-recall, sdd-docs, sdd-continue, sdd-apply (orchestrator) |
+
+### Selective steering loading
+
+Skills that read `openspec/steering/` load only relevant specialist files based on the task's files, not all `.md` files. Specialists with `applies_to: all` in their manifest are always loaded.
+
+### Prompt caching
+
+Orchestrator skills (`sdd-apply`, `sdd-agent`) read steering once and pass the content inline to subagent prompts. This creates a fixed prefix that benefits from LLM prompt caching across sequential agents.
+
+### Output style
+
+Skills include a terse output directive. Status reports use tables and single-line bullets, not prose.
+
+### English artifacts
+
+All generated artifacts (proposal.md, spec.md, design.md, tasks.md, notes.md) are written in English. English uses ~30% fewer tokens than Romance languages for the same content.
 
 ## Workflow graph
 

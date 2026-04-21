@@ -1,6 +1,7 @@
 ---
 name: sdd-new
 description: SDD New - Start a new change. Runs explore + propose in sequence. Entry point for new features. Usage - /sdd-new "description" or /sdd-new TICKET-123.
+model_hint: sonnet
 requires: ["openspec/config.yaml"]
 produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/notes.md"]
 ---

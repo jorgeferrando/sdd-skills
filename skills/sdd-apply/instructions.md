@@ -1,6 +1,8 @@
 ---
 name: sdd-apply
 description: SDD Apply - Implement the change following tasks.md. One task = one file = one atomic commit. Usage - /sdd-apply or /sdd-apply {change-name} or /sdd-apply T03.
+model_hint: haiku
+model_hint_subagents: sonnet
 requires: ["openspec/changes/{change}/tasks.md", "openspec/steering/conventions.md"]
 produces: []
 ---
@@ -8,6 +10,8 @@ produces: []
 # SDD Apply
 
 > Implement the code following `tasks.md`. One task = one file = one atomic commit.
+
+**Output style:** terse. Use single-line status per task. No prose, no repeated info. Tables over lists.
 
 ## Usage
 
@@ -47,9 +51,14 @@ This ensures the AI assistant has the conventions and rules needed to implement 
   - `openspec/steering/conventions.md`
   - `openspec/steering/project-rules.md` (if exists)
   - `openspec/steering/tech.md` (if exists)
-- Additionally, read **all** other `.md` files in `openspec/steering/` (specialist advisors, domain-specific conventions, etc.). These extend the base conventions with focused expertise.
+- **Selective specialist loading**: do NOT read all `.md` files in `openspec/steering/`. Instead, load only the specialist files relevant to the current task's file(s):
+  - `conventions-testing.md` / `conventions-tdd.md` → only when the task touches test files
+  - `conventions-security.md` → only when the task touches auth, API, or input handling files
+  - `conventions-*.md` with `applies_to: all` in their manifest → always load
+  - Other specialists → load only when the task file matches the specialist's domain
+  - If unsure whether a specialist is relevant, skip it — base conventions.md is always sufficient
 
-Apply all rules from these files throughout the implementation.
+Apply all rules from loaded files throughout the implementation.
 
 ## Step 1: Load current state
 
@@ -71,6 +80,8 @@ git branch --show-current
 
 For each pending task, launch a **subagent** using the Agent tool. This keeps the orchestrator context clean — implementation details (code read, attempts, test output) stay inside the agent and do not accumulate in the main conversation.
 
+**Prompt caching**: the steering content loaded in Step 0 is identical across all subagents. Include it as a fixed prefix in every agent prompt so the LLM can cache it. Do NOT tell subagents to re-read steering files — that wastes tokens and prevents cache hits.
+
 ### Agent prompt per task
 
 Spawn one agent per task with this information:
@@ -82,9 +93,9 @@ TASK: {full task line from tasks.md, including file path and description}
 DEPENDS ON: {list of completed task IDs this depends on, or "none"}
 
 STEERING (apply these rules throughout):
-- Read openspec/steering/conventions.md
-- Read openspec/steering/project-rules.md (if exists)
-- Read openspec/steering/tech.md (if exists)
+{Include the steering content already loaded by the orchestrator in Step 0.
+ Do NOT tell the subagent to re-read steering files — pass the content inline
+ to benefit from prompt caching across sequential agents.}
 
 SPEC CONTEXT:
 - Read openspec/changes/{change-name}/specs/{domain}/spec.md

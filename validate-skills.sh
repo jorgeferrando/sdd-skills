@@ -66,6 +66,14 @@ for skill_dir in "$SKILLS_DIR"/sdd-*/; do
         error "$skill_name: frontmatter missing 'description' field"
     fi
 
+    # --- Frontmatter: model_hint field ---
+    fm_model=$(sed -n '/^---$/,/^---$/{ /^model_hint:/p }' "$skill_dir/instructions.md" | head -1 | sed 's/^model_hint:[[:space:]]*//')
+    if [[ -z "$fm_model" ]]; then
+        error "$skill_name: frontmatter missing 'model_hint' field"
+    elif [[ "$fm_model" != "opus" && "$fm_model" != "sonnet" && "$fm_model" != "haiku" ]]; then
+        error "$skill_name: model_hint '$fm_model' must be opus, sonnet, or haiku"
+    fi
+
     # --- No errors for this skill ---
     if [[ $errors -eq 0 ]] || ! echo "$skill_name" | grep -q "ERROR"; then
         ok "$skill_name"

@@ -1,6 +1,7 @@
 ---
 name: sdd-ff
 description: SDD Fast-Forward - Run propose + spec + design + tasks without pauses. For when the scope is clear and you want to generate all documentation in one pass. Usage - /sdd-ff "description" or /sdd-ff TICKET-123.
+model_hint: sonnet
 requires: ["openspec/config.yaml"]
 produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/specs/*/spec.md", "openspec/changes/{change}/design.md", "openspec/changes/{change}/tasks.md"]
 ---
@@ -18,6 +19,10 @@ produces: ["openspec/changes/{change}/proposal.md", "openspec/changes/{change}/s
 
 Use when the scope is clear and no approval is needed between phases.
 For complex or uncertain changes, use `/sdd-new` + `/sdd-continue` with pauses.
+
+## Model selection
+
+Each phase uses the model indicated by its `model_hint` frontmatter field. When spawning subagents, pass the corresponding model hint. Phases 2 (propose) and 4 (design) use `opus`; phase 3 (spec) uses `sonnet`; phase 5 (tasks) uses `haiku`.
 
 ## Prerequisites
 

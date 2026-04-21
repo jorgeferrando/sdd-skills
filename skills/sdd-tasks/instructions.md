@@ -1,6 +1,7 @@
 ---
 name: sdd-tasks
 description: SDD Tasks - Break the design into atomic tasks. One task = one file = one commit. Usage - /sdd-tasks or as part of /sdd-ff.
+model_hint: haiku
 requires: ["openspec/changes/{change}/design.md"]
 produces: ["openspec/changes/{change}/tasks.md"]
 ---
@@ -49,6 +50,8 @@ git checkout -b {ticket-or-change-name}
 ```
 
 ## Step 4: Create tasks.md
+
+**Write all artifacts in English** for token efficiency and searchability.
 
 Create `openspec/changes/{change-name}/tasks.md`:
 

@@ -1,6 +1,7 @@
 ---
 name: sdd-discover
 description: SDD Discover - Analyze existing codebase and generate initial canonical specs in openspec/specs/ with Status inferred. Run once per project after sdd-init. Usage - /sdd-discover or /sdd-discover {domain}.
+model_hint: sonnet
 requires: ["openspec/config.yaml"]
 produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md"]
 ---
@@ -9,6 +10,8 @@ produces: ["openspec/specs/*/spec.md", "openspec/INDEX.md"]
 
 > Reverse-spec: analyze the existing codebase and infer initial canonical specs.
 > Each detected domain is analyzed in an isolated subagent with its own context.
+
+**Output style:** terse. One line per domain. No prose in summaries.
 
 ## Usage
 
@@ -77,6 +80,8 @@ If all domains already have specs → inform and finish without creating anythin
 
 After user confirmation, launch **one subagent per domain in parallel**
 using the Agent tool (subagent_type: `general-purpose`).
+
+**Prompt caching**: use an identical prompt prefix across all subagents (format template, date, project context). Only the domain-specific parts (domain name, path) should differ. This maximizes cache hits for parallel agents.
 
 **Base prompt for each subagent:**
 

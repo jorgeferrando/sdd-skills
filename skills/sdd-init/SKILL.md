@@ -1,6 +1,7 @@
 ---
 name: sdd-init
 description: SDD Init - Bootstrap openspec/ with guided onboarding. Scans environment, asks questions about the project (with trade-offs), and generates openspec/steering/ artifacts that feed the entire SDD workflow. Entry point for new projects. Usage - /sdd-init.
+model_hint: sonnet
 requires: []
 produces: ["openspec/config.yaml", "openspec/steering/product.md", "openspec/steering/tech.md", "openspec/steering/structure.md", "openspec/steering/conventions.md", "openspec/steering/environment.md", "openspec/steering/project-skill.md", "openspec/steering/project-rules.md"]
 ---
@@ -96,116 +97,49 @@ To start a new feature: /sdd-new "description"
 Present questions one group at a time. Wait for answers before proceeding.
 
 ### Principles
-- Assume the user has no technical knowledge
-- For each decision with multiple valid options: show trade-offs in plain language
-- When the AI has high confidence for the given context: recommend explicitly with a one-line justification
-- The user can always answer "you decide" — the AI will choose and explain
+- Show trade-offs in plain language for each multi-option question
+- Recommend explicitly when confidence is high (one-line justification)
+- The user can always answer "you decide"
 
 ---
 
 ### Group A — Project (always asked)
 
-**A1. What does this project build?**
-(Free text, 1-3 sentences. Example: "A web app where users can book parking spaces.")
-
-**A2. Who uses it?**
-(Examples: end users via browser, mobile app, internal team, other APIs, etc.)
-
-**A3. What does it NOT do?**
-(Helps define boundaries. Example: "It doesn't handle payments — that's a separate system.")
-
----
+| # | Question | Notes |
+|---|----------|-------|
+| A1 | What does this project build? | Free text, 1-3 sentences |
+| A2 | Who uses it? | End users, internal team, other APIs, etc. |
+| A3 | What does it NOT do? | Define boundaries |
 
 ### Group B — Stack (skip if detected from config files)
 
-**B1. What type of project is it?**
-
-| Option | Best for |
-|--------|---------|
-| Web app (frontend) | UI that users interact with in a browser |
-| API / Backend | Service that other apps consume |
-| CLI tool | Command-line utility |
-| Mobile app | iOS/Android |
-| Library / Package | Code other developers use |
-| Full-stack | Frontend + backend together |
-
-**B2. Preferred language?**
-
-If user has no preference, recommend based on B1:
-- Web frontend → JavaScript/TypeScript *(most ecosystem, most jobs, runs in browser natively)*
-- API/Backend → TypeScript (Node) or Python *(TS: fast, typed; Python: simpler syntax, great for data/AI)*
-- CLI → Python or Go *(Python: easy to write; Go: single binary, fast)*
-- Library → match the language of the target ecosystem
-
-**B3. Framework?**
-
-Show top 2-3 options for the chosen language with one-line trade-offs. Example for TypeScript API:
-- **Express** — minimal, flexible, you decide everything *(more work, more control)*
-- **Fastify** — like Express but faster and with built-in schema validation *(recommended for APIs)*
-- **NestJS** — structured, opinionated, like Angular for backends *(best for large teams)*
-
-**B4. Database?** (if applicable)
-- **None** — stateless, uses external APIs
-- **PostgreSQL** — relational, robust, recommended default for most apps
-- **SQLite** — file-based, zero setup, good for small/local apps
-- **MongoDB** — document-based, flexible schema *(best when data structure varies a lot)*
-- **Redis** — in-memory, for cache or real-time features
-
-**B5. Testing stack?**
-Usually determined by the main framework — confirm or ask if ambiguous.
-
----
+| # | Question | If user has no preference, recommend based on project type |
+|---|----------|-----------------------------------------------------------|
+| B1 | Project type? | Web frontend / API / CLI / Mobile / Library / Full-stack |
+| B2 | Language? | Frontend→TS, API→TS or Python, CLI→Python or Go, Library→match ecosystem |
+| B3 | Framework? | Show top 2-3 options with one-line trade-offs |
+| B4 | Database? | None / PostgreSQL (default) / SQLite / MongoDB / Redis |
+| B5 | Testing stack? | Usually determined by framework — confirm if ambiguous |
 
 ### Group C — Team & rigor (always asked)
 
-**C1. Team size?**
-- Solo developer
-- Small team (2-5 people)
-- Larger team (6+)
-
-**C2. Quality level?**
-- **MVP / Prototype** — move fast, some shortcuts OK, will refactor later
-- **Production** — proper tests, documented conventions, code review
-- **Open source** — public repo, contributor-friendly, strict conventions
-
-**C3. CI/CD?**
-- None for now
-- GitHub Actions
-- GitLab CI
-- Other
-
----
+| # | Question | Options |
+|---|----------|---------|
+| C1 | Team size? | Solo / Small (2-5) / Large (6+) |
+| C2 | Quality level? | MVP (shortcuts OK) / Production (tests+review) / Open source (strict) |
+| C3 | CI/CD? | None / GitHub Actions / GitLab CI / Other |
 
 ### Group D — Available tools (only if MCPs detected in scan)
 
-Show which MCPs were detected, confirm which to use for this project:
-
-```
-Detected available tools:
-  ✓ Context7    — library documentation (recommended: yes)
-  ✓ Jira/Linear — ticket tracking (use for this project?)
-  ✓ GitHub      — PR integration (recommended: yes)
-```
-
----
+Show detected MCPs, confirm which to use for this project.
 
 ### Group E — Patterns (optional, recommend based on stack)
 
-**E1. Architecture style?**
-If user says "you decide", recommend based on stack and team size:
-- Solo/MVP → simple layered (no ceremony)
-- Small team/Production → hexagonal or clean architecture
-- API + large team → CQRS
-
-**E2. TDD?**
-- Yes — write tests before code *(slower start, fewer regressions)*
-- No — write tests after *(faster to start, discipline required)*
-- AI decides per task *(recommended: TDD for critical logic, tests-after for UI)*
-
-**E3. Commit format?**
-- Conventional Commits (`feat: add user auth`) *(tooling compatible, changelog-friendly)*
-- `[change-name] Description` *(SDD default — simple, traceable)*
-- Other
+| # | Question | Default recommendation |
+|---|----------|----------------------|
+| E1 | Architecture? | Solo/MVP→layered, Team/Prod→hexagonal, Large/API→CQRS |
+| E2 | TDD? | AI decides per task (TDD for critical logic, tests-after for UI) |
+| E3 | Commit format? | `[change-name] Description` (SDD default) or Conventional Commits |
 
 ---
 
@@ -430,30 +364,6 @@ Next steps:
   /sdd-new "description"   → start your first feature
   /sdd-audit               → check existing code against conventions
 ```
-
----
-
-## Living rules — how project-rules.md grows
-
-During any session working on this project, when the user corrects a decision the AI made:
-
-**Explicit correction** ("always use X", "from now on Y", "remember this"):
-→ Add rule to `project-rules.md` immediately, confirm: "Saved: MUST use X — {reason}"
-
-**Implicit correction** (user overrides something the AI chose):
-→ Ask: "Want me to save this as a rule for future sessions? (project-rules.md)"
-→ On yes: add rule. On no: apply only in this session.
-→ On second implicit correction of the same pattern: save without asking.
-
-**Rule format** (RFC 2119):
-```markdown
-## {Area}
-- **MUST** {concrete rule} — {one-line reason from the correction context}
-```
-
-**Classification**:
-- Granular implementation (style, naming, test patterns, library usage) → `project-rules.md`
-- Architectural decisions (layers, patterns, data flow) → `conventions.md`
 
 ---
 

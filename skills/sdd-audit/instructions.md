@@ -1,6 +1,7 @@
 ---
 name: sdd-audit
 description: SDD Audit - Analyzes the codebase against conventions.md and project-rules.md, producing a classified report with correction prompts. Usage - /sdd-audit or /sdd-audit src/path/.
+model_hint: sonnet
 requires: ["openspec/steering/conventions.md"]
 produces: []
 ---
@@ -10,6 +11,8 @@ produces: []
 > Detects architecture violations before PR review.
 > Analyzes modified files against conventions in `openspec/steering/conventions.md`
 > and implementation rules in `openspec/steering/project-rules.md`.
+
+**Output style:** terse. One line per violation: `[C01] file:line — description`. Tables for summary. No prose.
 
 ## Usage
 
@@ -40,13 +43,18 @@ Without a conventions baseline, audit has no reference.
 
 ## Step 2: Load ruleset
 
-Read all steering files as a unified ruleset:
+Read steering files as a unified ruleset:
 
 1. Read `openspec/steering/conventions.md` (required)
 2. If `openspec/steering/project-rules.md` exists → read it too
-3. Read **all** other `.md` files in `openspec/steering/` — specialist advisors add domain-specific rules in the same RFC 2119 format
+3. **Selective specialist loading**: load only `conventions-*.md` files relevant to the files in scope:
+   - Specialists with `applies_to: all` in their manifest → always load
+   - `conventions-testing.md` / `conventions-tdd.md` → only when scope includes test files
+   - `conventions-security.md` → only when scope includes auth, API, or input handling files
+   - Other specialists → load only when scope files match the specialist's domain
+   - Skip irrelevant specialists to reduce context size
 
-All rules are treated equally regardless of source file.
+All loaded rules are treated equally regardless of source file.
 
 **Note:** Rules in `project-rules.md` that duplicate linter coverage (e.g. quote style
 already enforced by ruff/eslint) should NOT generate audit violations — the audit is

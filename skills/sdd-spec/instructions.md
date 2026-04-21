@@ -1,6 +1,7 @@
 ---
 name: sdd-spec
 description: SDD Spec - Create or update domain specs in openspec/. The spec describes system behavior, not implementation. Usage - /sdd-spec or as part of /sdd-ff.
+model_hint: sonnet
 requires: ["openspec/changes/{change}/proposal.md"]
 produces: ["openspec/changes/{change}/specs/*/spec.md"]
 ---
@@ -37,6 +38,8 @@ If `openspec/specs/{domain}/spec.md` exists, read it first. The change spec is a
 Use `AskUserQuestion` to resolve edge cases, validation rules, and error behavior before writing.
 
 ## Step 4: Create the delta spec
+
+**Write all artifacts in English** for token efficiency and searchability.
 
 Create `openspec/changes/{change-name}/specs/{domain}/spec.md`:
 

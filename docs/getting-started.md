@@ -235,6 +235,62 @@ AUXILIARY SKILLS (at any time)
 
 ---
 
+## Context management: when to clear
+
+Each SDD phase produces an artifact that captures everything decided. After a phase completes, the conversation context is redundant with the artifact — clearing it saves tokens without losing information.
+
+### When to clear context
+
+| Moment | Clear? | Why |
+|--------|--------|-----|
+| Between explore and propose | **No** | They are coupled — exploration findings feed the proposal questions |
+| After propose | **Yes** | `proposal.md` captures all decisions. Spec reads the file, not the conversation |
+| After spec | **Yes** | `spec.md` captures all behavior |
+| After design | **Yes** | `design.md` captures all architecture |
+| After tasks | **Yes** | Most important cut — apply is the longest phase, entering with a clean context saves the most |
+| During apply (between tasks) | **No** | Subagents already isolate context. The orchestrator accumulates little (~1 line per task) |
+| After verify | **Yes** | PR is created, everything captured |
+
+### Why this works
+
+The SDD artifact chain is the context:
+
+```
+explore  → notes.md       (findings)
+propose  → proposal.md    (scope decisions)
+spec     → spec.md        (behavior)
+design   → design.md      (architecture)
+tasks    → tasks.md        (execution plan)
+apply    → commits         (code)
+verify   → PR              (result)
+```
+
+`/sdd-continue` is designed for this pattern: it detects the current phase from the artifacts, not from conversation history. Each `/sdd-continue` invocation after a context clear works correctly because it reads the change directory.
+
+### Recommended session pattern
+
+```
+/sdd-new "feature X"        ← explore + propose in one session
+  ↓ clear context
+/sdd-continue               ← detects spec
+  ↓ clear context
+/sdd-continue               ← detects design (runs as agent, already isolated)
+  ↓ clear context
+/sdd-continue               ← detects tasks
+  ↓ clear context            ← ★ most important cut
+/sdd-apply                  ← starts clean, runs many turns
+  ↓ clear context
+/sdd-verify                 ← starts clean
+  ↓ clear context
+/sdd-archive                ← quick, minimal context needed
+```
+
+### With `/sdd-ff`
+
+FF runs propose → spec → design → tasks without pauses (~4-5 turns). Keep the context during the entire FF execution. Clear before `/sdd-apply`.
+
+For more details on token optimization strategies, see [Token Optimization](concepts/token-optimization.md).
+
 ## Tips
 
 - **`/sdd-continue` is your friend** — when in doubt, just run it
@@ -242,3 +298,4 @@ AUXILIARY SKILLS (at any time)
 - **Let `project-rules.md` grow** — correct the AI once, it remembers forever
 - **Archive often** — it keeps canonical specs up to date
 - **Use `/sdd-ff` for small changes** — don't over-process simple tasks
+- **Clear context between phases** — artifacts capture decisions, conversation context is ephemeral

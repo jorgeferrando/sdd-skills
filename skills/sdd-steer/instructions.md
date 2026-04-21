@@ -1,6 +1,7 @@
 ---
 name: sdd-steer
 description: SDD Steer - Generate and synchronize steering files in openspec/steering/. Bootstrap on first run, sync detects drift, report analyzes health. Usage - /sdd-steer or /sdd-steer sync or /sdd-steer report.
+model_hint: sonnet
 requires: ["openspec/steering/"]
 produces: ["openspec/steering/conventions.md", "openspec/steering/project-rules.md", "openspec/steering/tech.md", "openspec/steering/structure.md", "openspec/steering/product.md"]
 ---
@@ -9,6 +10,8 @@ produces: ["openspec/steering/conventions.md", "openspec/steering/project-rules.
 
 > Generate "persistent memory" files for the project in `openspec/steering/`.
 > Captures invisible conventions that cause PR review failures — final, readonly, naming, layers.
+
+**Output style:** terse. Tables and bullets. No prose in status reports.
 
 ## Usage
 
@@ -129,41 +132,7 @@ Format:
 - **SHOULD** {concrete rule} — {one-line reason}
 ```
 
-Common area examples:
-
-**Python / Textual:**
-```markdown
-## Python — Imports
-- **MUST** use `from __future__ import annotations` in all modules — forward refs
-
-## Textual — Navigation
-- **MUST** use `push_screen` / `pop_screen` — no inline widget swap
-- **MUST** use `call_after_refresh` for dynamic height — Textual render order
-- **MUST NOT** use `pilot.type()` in tests — does not exist in Textual 8.x; use `widget.value = text`
-
-## Workers
-- **MUST** use `@work(thread=True, exclusive=True)` for blocking subprocess workers
-- **MUST** use `self.app.call_from_thread` (not `self.call_from_thread`) — Screen doesn't expose it
-
-## Commits
-- **MUST** follow format `[change-name] Description in English`
-- **MUST** be atomic: one logical change, one file per commit
-```
-
-**PHP / Symfony / CQRS:**
-```markdown
-## PHP — Classes
-- **MUST** use `final` keyword — inheritance not used by convention
-- **MUST** declare all Request properties as `readonly` — immutability contract
-
-## CQRS — Handlers
-- **MUST NOT** inject Repository directly — only via use case interfaces
-- **MUST** receive a single Command/Query object as parameter
-
-## Naming
-- **MUST** name Commands as `{Verb}{Entity}Command` (e.g. CreateRateCommand)
-- **MUST** name Handlers as `{Verb}{Entity}Handler` (e.g. CreateRateHandler)
-```
+Derive convention areas from the stack (e.g., Imports, Framework patterns, Workers, Tests, Commits, Architecture layers). Each rule: `- **MUST/SHOULD/MAY** {concrete rule} — {one-line reason}`. Aim for 5-15 rules covering the patterns that cause PR review failures.
 
 ### Step 7: Create directory and write files
 
@@ -207,25 +176,7 @@ Compare:
 
 Present specific proposals to the user. **DO NOT apply automatically.**
 
-Format:
-```
-DRIFT DETECTED in conventions.md:
-
-ADD (new conventions found):
-+ ## Angular — Signals
-+   - **MUST** use `signal()` for reactive state — no BehaviorSubject
-
-UPDATE (outdated convention):
-~ ## Tests — Patterns
-~   OLD: **MUST NOT** use `async/await` directly
-~   NEW: **MUST** use `async/await` with `asyncio` mode in pytest.ini
-
-REMOVE (no longer applies):
-- ## Python — Compat
--   - **MUST** support Python 3.9 (no longer required — min is 3.13)
-
-Apply these changes? (y/n/select)
-```
+Present as a diff using `+` (add), `~` (update with old→new), `-` (remove) prefixes. Ask `Apply these changes? (y/n/select)`.
 
 ---
 

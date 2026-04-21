@@ -55,6 +55,8 @@ nav:
     - The SDD Workflow: concepts/workflow.md
     - Openspec Directory: concepts/openspec.md
     - Steering Files: concepts/steering.md
+    - Skills vs Agents: concepts/skills-vs-agents.md
+    - Token Optimization: concepts/token-optimization.md
   - Skills Reference:
     - Setup:
       - sdd-init: skills/sdd-init.md
