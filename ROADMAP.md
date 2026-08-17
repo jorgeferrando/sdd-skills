@@ -1,6 +1,6 @@
 # SDD Skills — Roadmap
 
-Ultima actualizacion: 2026-04-15
+Ultima actualizacion: 2026-08-17
 
 ---
 
@@ -83,6 +83,11 @@ Cuando haya usuarios reales que validen el diseno.
 
 ## Hitos completados
 
+- [x] 2026-08-17 — Release v1.1.0: bug flow first-class + Copilot native plugin install
+- [x] 2026-08-17 — `sdd-bug` skill: 8-item bug-intake evidence gate with `Bug intake incomplete` clarification protocol and explicit draft-with-blockers escape hatch
+- [x] 2026-08-17 — `sdd-diagnose` skill: 5-step evidence-first diagnosis (symptom → inventory → baseline → scope → diagnosis) with `confirmed | most likely | unresolved` confidence
+- [x] 2026-08-17 — GitHub Copilot native plugin marketplace install (`.github/plugin/marketplace.json`) added as primary path; file-copy install remains as fallback for older Copilot CLI
+- [x] 2026-08-17 — Marketplace drift check in `validate-skills.sh`: fails CI if `.claude-plugin/marketplace.json` and `.github/plugin/marketplace.json` diverge
 - [x] 2026-04-15 — Reestructura repo: `sdd-*/` → `skills/sdd-*/` (SkillKit compatible)
 - [x] 2026-04-15 — SkillKit como opcion de instalacion en README y docs
 - [x] 2026-04-15 — Issue rohitg00/skillkit#112 para registro en marketplace
