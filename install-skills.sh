@@ -38,10 +38,12 @@ INSTRUCTION_FILE="instructions.md"
 # All available skills (in workflow order)
 ALL_SKILLS=(
     sdd-init sdd-discover sdd-steer
-    sdd-new sdd-explore sdd-propose sdd-spec
+    sdd-new sdd-bug sdd-diagnose
+    sdd-explore sdd-propose sdd-spec
     sdd-design sdd-tasks sdd-apply
     sdd-verify sdd-archive
-    sdd-ff sdd-continue sdd-audit sdd-docs
+    sdd-ff sdd-continue sdd-agent
+    sdd-audit sdd-docs sdd-recall
 )
 
 # Parse flags
@@ -138,10 +140,14 @@ select_skills() {
     echo "    sdd-design      sdd-tasks         sdd-apply"
     echo "    sdd-verify      sdd-archive"
     echo ""
-    echo -e "  ${DIM}Shortcuts & utilities${RESET}"
-    echo "    sdd-ff          sdd-continue      sdd-audit         sdd-docs"
+    echo -e "  ${DIM}Bug flow${RESET}"
+    echo "    sdd-bug         sdd-diagnose"
     echo ""
-    echo -e "  Install ${BOLD}[a]ll${RESET} 16 skills or ${BOLD}[s]elect${RESET} specific ones?"
+    echo -e "  ${DIM}Shortcuts & utilities${RESET}"
+    echo "    sdd-ff          sdd-continue      sdd-agent"
+    echo "    sdd-audit       sdd-docs          sdd-recall"
+    echo ""
+    echo -e "  Install ${BOLD}[a]ll${RESET} 20 skills or ${BOLD}[s]elect${RESET} specific ones?"
     read -rp "  Choice [a/s]: " sel_choice
 
     case "$sel_choice" in
@@ -322,6 +328,74 @@ if [[ -z "$TOOL" ]]; then
         4) TOOL="copilot" ;;
         *) echo "Invalid choice."; exit 1 ;;
     esac
+fi
+
+# ---------------------------------------------------------------------------
+# Copilot install method — native plugin marketplace vs manual file copy
+# ---------------------------------------------------------------------------
+#
+# GitHub Copilot CLI now supports a native plugin marketplace (same command
+# surface as Claude Code CLI). This is the recommended path and needs no
+# local file copy — Copilot fetches skills directly from GitHub. Manual
+# file copy stays as fallback for Copilot CLI versions without plugin
+# support.
+
+copilot_choose_method() {
+    if [[ -n "${COPILOT_METHOD:-}" ]]; then
+        return
+    fi
+    echo ""
+    echo -e "  ${BOLD}GitHub Copilot install method${RESET}"
+    echo ""
+    echo "    [1] Copilot plugin marketplace (recommended, needs recent Copilot CLI)"
+    echo "        No local files copied — Copilot pulls skills from GitHub."
+    echo "        Requires: 'copilot plugin' command available."
+    echo ""
+    echo "    [2] Manual file copy to .github/sdd/ (fallback for older Copilot CLI)"
+    echo "        Copies skill files into the current repo."
+    echo ""
+    read -rp "  Choice [1/2]: " copilot_method
+    case "$copilot_method" in
+        1) COPILOT_METHOD="plugin" ;;
+        *) COPILOT_METHOD="manual" ;;
+    esac
+}
+
+copilot_show_plugin_instructions() {
+    echo ""
+    echo -e "${BOLD}Install via Copilot plugin marketplace${RESET}"
+    echo ""
+    echo "  Run these two commands (either in a terminal or inside a Copilot CLI"
+    echo "  session with '/plugin ...'):"
+    echo ""
+    echo -e "  ${CYAN}copilot plugin marketplace add jorgeferrando/sdd-skills${RESET}"
+    echo -e "  ${CYAN}copilot plugin install sdd-skills@sdd-skills${RESET}"
+    echo ""
+    echo "  Verify:"
+    echo ""
+    echo -e "  ${CYAN}copilot plugin list${RESET}"
+    echo ""
+    echo -e "  ${DIM}Update later with: copilot plugin update sdd-skills${RESET}"
+    echo -e "  ${DIM}Uninstall with: copilot plugin uninstall sdd-skills${RESET}"
+    echo ""
+    echo "  Marketplace manifest: .github/plugin/marketplace.json"
+    echo "  Plugin manifest:      .claude-plugin/plugin.json (shared schema)"
+    echo ""
+    echo -e "${GREEN}Nothing installed locally — plugin lives in the Copilot marketplace.${RESET}"
+    echo "After running the commands above, restart your Copilot session."
+}
+
+if [[ "$TOOL" == "copilot" ]]; then
+    # Parse env-provided method for non-interactive scripting
+    case "${1:-}" in
+        --copilot-plugin) COPILOT_METHOD="plugin" ;;
+        --copilot-manual) COPILOT_METHOD="manual" ;;
+    esac
+    copilot_choose_method
+    if [[ "$COPILOT_METHOD" == "plugin" ]]; then
+        copilot_show_plugin_instructions
+        exit 0
+    fi
 fi
 
 # Scope selection (global only for Claude Code)

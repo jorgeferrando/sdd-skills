@@ -31,6 +31,27 @@ From within Claude Code:
 /plugin install sdd-skills@sdd-skills
 ```
 
+### GitHub Copilot plugin
+
+Copilot CLI now supports the same plugin marketplace surface. From a terminal or inside a Copilot CLI session:
+
+```
+copilot plugin marketplace add jorgeferrando/sdd-skills
+copilot plugin install sdd-skills@sdd-skills
+copilot plugin list                   # verify
+```
+
+Updates and removal:
+
+```
+copilot plugin update sdd-skills
+copilot plugin uninstall sdd-skills
+```
+
+The marketplace manifest lives at `.github/plugin/marketplace.json` (Copilot format, byte-identical to `.claude-plugin/marketplace.json`). No local file copy needed — Copilot fetches skills from GitHub directly.
+
+If your Copilot CLI does not have the `plugin` subcommand yet, fall back to the manual file-copy install (`./install-skills.sh --copilot`, then pick option 2).
+
 ### One-liner (all tools)
 
 ```bash
@@ -420,6 +441,64 @@ Close the change cycle. Merge specs and move to archive.
 3. Moves the change to `openspec/changes/archive/{date}-{change-name}/`
 
 After archive, canonical specs reflect the current system state and the change artifacts are preserved for history.
+
+---
+
+### Bug flow
+
+#### `/sdd-bug`
+
+Bug-specific entry point. Validates 8 items of evidence before drafting a proposal. Use instead of `/sdd-new` when the change is a bug fix.
+
+```
+/sdd-bug "checkout returns 500 when promo code is expired"
+/sdd-bug TICKET-123
+/sdd-bug --issue 42
+```
+
+**Evidence gate (all 8 required):**
+
+1. Current broken behavior (observable symptom)
+2. Expected correct behavior (distinct from current)
+3. Reproduction steps or trigger
+4. Evidence source (log, trace, screenshot, ticket, alert)
+5. Impact / severity
+6. Affected scope
+7. Root cause status (`known` | `suspected` | `unknown`)
+8. Regression guard
+
+**Behavior:**
+- All 8 present → drafts `notes.md` + `proposal.md`, hands off to `/sdd-continue`
+- Root cause `unknown` + non-deterministic repro → recommends `/sdd-diagnose`
+- Anything else missing → emits `Bug intake incomplete` with one focused question, writes nothing
+
+**Output:** `openspec/changes/{change-name}/notes.md` + `proposal.md`
+**Next:** `/sdd-continue` (proceeds to spec)
+
+---
+
+#### `/sdd-diagnose`
+
+Evidence-first diagnosis for bugs, regressions, incidents, alerts, and performance issues. Use when the root cause is unknown or multiple plausible causes exist.
+
+```
+/sdd-diagnose "checkout intermittently returns 500 on promo apply"
+/sdd-diagnose                       # Diagnose the active change
+/sdd-diagnose {change-name}
+```
+
+**5-step evidence-first workflow:**
+
+1. Symptom statement (reported vs observable)
+2. Evidence inventory (available vs missing)
+3. Expected behavior baseline (with source)
+4. Narrowed scope (candidates eliminated + remaining boundary)
+5. Diagnosis statement (root cause + confidence: confirmed | most likely | unresolved)
+
+**Rule:** does not propose fixes, plans, or continue to spec/design/code until diagnosis is complete.
+
+**Output:** `openspec/changes/{change-name}/diagnosis.md`
+**Next:** `/sdd-bug` (diagnosis fills gate items 3, 6, 7) — or collect discriminating evidence and re-run if unresolved
 
 ---
 

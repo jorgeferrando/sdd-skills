@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-A collection of 16 AI coding assistant skills (markdown instruction files) that implement the SDD (Spec-Driven Development) workflow. There is no application code, no tests, no build system — only instruction files, documentation, and shell scripts.
+A collection of 20 AI coding assistant skills (markdown instruction files) that implement the SDD (Spec-Driven Development) workflow. There is no application code, no tests, no build system — only instruction files, documentation, and shell scripts.
 
 Skills are LLM-agnostic. The installer packages them for Claude Code, Cursor, Codex, or GitHub Copilot.
 
@@ -58,7 +58,7 @@ Each skill declares the minimum model tier needed. Orchestrators (`sdd-agent`, `
 | Hint | Use for | Skills |
 |------|---------|--------|
 | `opus` | Judgment-heavy: design decisions, solution proposals | sdd-propose, sdd-design |
-| `sonnet` | Comprehension: code analysis, spec writing, implementation | sdd-explore, sdd-spec, sdd-apply (subagents), sdd-verify, sdd-audit, sdd-steer, sdd-init, sdd-new, sdd-ff, sdd-discover, sdd-agent |
+| `sonnet` | Comprehension: code analysis, spec writing, implementation, evidence gathering | sdd-explore, sdd-spec, sdd-apply (subagents), sdd-verify, sdd-audit, sdd-steer, sdd-init, sdd-new, sdd-ff, sdd-discover, sdd-agent, sdd-bug, sdd-diagnose |
 | `haiku` | Mechanical: template-filling, search, dispatch | sdd-tasks, sdd-archive, sdd-recall, sdd-docs, sdd-continue, sdd-apply (orchestrator) |
 
 ### Selective steering loading
@@ -84,6 +84,9 @@ Skills form a dependency chain. Modifying one skill may affect others:
 ```
 sdd-init → sdd-discover
 sdd-new → (sdd-explore + sdd-propose) → sdd-spec → sdd-design → sdd-tasks → sdd-apply → sdd-verify → sdd-archive
+sdd-bug → (8-item evidence gate) → sdd-spec → ... (same downstream chain as sdd-new)
+       ↘ (evidence insufficient + repro non-deterministic) → sdd-diagnose → sdd-bug (re-run)
+sdd-diagnose = evidence-first diagnosis; standalone or invoked from sdd-bug
 sdd-ff = propose + spec + design + tasks in one pass
 sdd-continue = detects next phase and dispatches to the right skill
 sdd-steer = generates/updates openspec/steering/

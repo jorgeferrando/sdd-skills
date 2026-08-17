@@ -66,6 +66,8 @@ openspec/
 | `/sdd-discover` | Reverse-engineer specs from existing code |
 | `/sdd-steer` | Generate or sync steering files |
 | `/sdd-new` | Start a new change (explore + propose) |
+| `/sdd-bug` | Start a bug fix — validates 8-item evidence gate before drafting |
+| `/sdd-diagnose` | Evidence-based diagnosis when root cause is unknown |
 | `/sdd-ff` | Fast-forward: propose + spec + design + tasks in one pass |
 | `/sdd-continue` | Detect and execute next pending phase |
 | `/sdd-explore` | Read-only codebase exploration |

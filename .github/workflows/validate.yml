@@ -6,11 +6,13 @@ on:
     paths:
       - 'skills/**'
       - '.claude-plugin/**'
+      - '.github/plugin/**'
       - 'validate-skills.sh'
   pull_request:
     paths:
       - 'skills/**'
       - '.claude-plugin/**'
+      - '.github/plugin/**'
       - 'validate-skills.sh'
 
 jobs:

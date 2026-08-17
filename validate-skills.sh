@@ -10,6 +10,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_DIR="$SCRIPT_DIR/skills"
 PLUGIN_JSON="$SCRIPT_DIR/.claude-plugin/plugin.json"
+CLAUDE_MARKETPLACE="$SCRIPT_DIR/.claude-plugin/marketplace.json"
+COPILOT_MARKETPLACE="$SCRIPT_DIR/.github/plugin/marketplace.json"
 
 errors=0
 warnings=0
@@ -140,6 +142,27 @@ done
 
 doc_pages=$(find "$SCRIPT_DIR/docs/skills" -name 'sdd-*.md' 2>/dev/null | wc -l | tr -d ' ')
 ok "docs: $doc_pages skill pages found"
+
+# ---------------------------------------------------------------------------
+# 4. Validate marketplace manifests are in sync
+# ---------------------------------------------------------------------------
+# .claude-plugin/marketplace.json (Claude Code) and .github/plugin/marketplace.json
+# (GitHub Copilot) share one schema and must be byte-identical. Drift means one
+# of the tools sees stale plugin metadata.
+
+echo ""
+echo "Validating marketplace manifests"
+echo ""
+
+if [[ ! -f "$CLAUDE_MARKETPLACE" ]]; then
+    error "missing $CLAUDE_MARKETPLACE"
+elif [[ ! -f "$COPILOT_MARKETPLACE" ]]; then
+    error "missing $COPILOT_MARKETPLACE (run: cp .claude-plugin/marketplace.json .github/plugin/marketplace.json)"
+elif ! diff -q "$CLAUDE_MARKETPLACE" "$COPILOT_MARKETPLACE" > /dev/null 2>&1; then
+    error "marketplace.json drift: .claude-plugin/ and .github/plugin/ differ (run: cp .claude-plugin/marketplace.json .github/plugin/marketplace.json)"
+else
+    ok "marketplace.json: Claude and Copilot manifests in sync"
+fi
 
 # ---------------------------------------------------------------------------
 # Summary

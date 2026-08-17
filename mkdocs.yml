@@ -72,6 +72,9 @@ nav:
       - sdd-apply: skills/sdd-apply.md
       - sdd-verify: skills/sdd-verify.md
       - sdd-archive: skills/sdd-archive.md
+    - Bug Flow:
+      - sdd-bug: skills/sdd-bug.md
+      - sdd-diagnose: skills/sdd-diagnose.md
     - Shortcuts:
       - sdd-ff: skills/sdd-ff.md
       - sdd-continue: skills/sdd-continue.md

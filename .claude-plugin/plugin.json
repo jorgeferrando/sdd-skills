@@ -1,7 +1,7 @@
 {
   "name": "sdd-skills",
-  "description": "Spec-Driven Development skills for AI coding assistants. 18 skills that guide the AI through a structured workflow: spec, design, tasks, implement, verify, archive. Works with any language, framework, or stack.",
-  "version": "1.0.0",
+  "description": "Spec-Driven Development skills for AI coding assistants. 20 skills that guide the AI through a structured workflow: spec, design, tasks, implement, verify, archive. Includes bug-specific gate and evidence-first diagnosis. Works with any language, framework, or stack.",
+  "version": "1.1.0",
   "author": {
     "name": "jorgeferrando"
   },
@@ -19,6 +19,8 @@
     "./skills/sdd-init",
     "./skills/sdd-discover",
     "./skills/sdd-new",
+    "./skills/sdd-bug",
+    "./skills/sdd-diagnose",
     "./skills/sdd-explore",
     "./skills/sdd-propose",
     "./skills/sdd-spec",
