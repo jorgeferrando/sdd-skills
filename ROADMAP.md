@@ -4,6 +4,68 @@ Ultima actualizacion: 2026-08-17
 
 ---
 
+## Available skills
+
+Current catalog. Every skill lives in `skills/sdd-{name}/` with an `instructions.md` (canonical source) and a `SKILL.md` (Claude plugin runtime copy, byte-identical). Model hint drives cost/perf tier when spawning subagents.
+
+### Setup
+
+| Skill | Purpose | Model hint | Since |
+|-------|---------|------------|-------|
+| `sdd-init` | Bootstrap project — generates 7 steering files | sonnet | v1.0.0 |
+| `sdd-discover` | Reverse-engineer canonical specs from existing code | sonnet | v1.0.0 |
+| `sdd-steer` | Generate or sync steering files; `--report` for health/drift | sonnet | v1.0.0 |
+
+### Change lifecycle
+
+| Skill | Purpose | Model hint | Since |
+|-------|---------|------------|-------|
+| `sdd-new` | Start a change (explore + propose) | sonnet | v1.0.0 |
+| `sdd-explore` | Read-only codebase exploration; searches archived decisions | sonnet | v1.0.0 |
+| `sdd-propose` | Create proposal.md (problem, solution, alternatives, impact) | opus | v1.0.0 |
+| `sdd-spec` | Behavior spec (delta over canonical); Given/When/Then | sonnet | v1.0.0 |
+| `sdd-design` | Implementation design with alternatives and scope assessment | opus | v1.0.0 |
+| `sdd-tasks` | Break design into atomic ordered tasks | haiku | v1.0.0 |
+| `sdd-apply` | Implement task by task with atomic commits and steering | sonnet/haiku | v1.0.0 |
+| `sdd-verify` | Final validation before PR: tests, lint, spec compliance | sonnet | v1.0.0 |
+| `sdd-archive` | Close cycle; merge delta specs into canonical | haiku | v1.0.0 |
+
+### Bug flow
+
+| Skill | Purpose | Model hint | Since |
+|-------|---------|------------|-------|
+| `sdd-bug` | Bug entry point; 8-item evidence gate before drafting | sonnet | **v1.1.0** |
+| `sdd-diagnose` | Evidence-first 5-step diagnosis (symptom → root cause) | sonnet | **v1.1.0** |
+
+### Shortcuts
+
+| Skill | Purpose | Model hint | Since |
+|-------|---------|------------|-------|
+| `sdd-ff` | Fast-forward: propose + spec + design + tasks in one pass | sonnet | v1.0.0 |
+| `sdd-continue` | Detect and execute next pending phase | haiku | v1.0.0 |
+| `sdd-agent` | Autonomous orchestrator (full cycle + PR loop) | sonnet | v1.0.0 |
+
+### Utilities
+
+| Skill | Purpose | Model hint | Since |
+|-------|---------|------------|-------|
+| `sdd-audit` | Check code against conventions (MUST/SHOULD/MAY) | sonnet | v1.0.0 |
+| `sdd-docs` | Generate MkDocs site from openspec/ | haiku | v1.0.0 |
+| `sdd-recall` | Search archived specs and past design decisions | haiku | v1.0.0 |
+
+**Total:** 20 skills (v1.1.0).
+
+### Distribution
+
+| Tool | Install command | Manifest |
+|------|-----------------|----------|
+| Claude Code | `/plugin marketplace add jorgeferrando/sdd-skills` + `/plugin install sdd-skills@sdd-skills` | `.claude-plugin/marketplace.json` |
+| GitHub Copilot | `copilot plugin marketplace add jorgeferrando/sdd-skills` + `copilot plugin install sdd-skills@sdd-skills` | `.github/plugin/marketplace.json` (byte-identical to Claude) |
+| Cursor / Codex | `./install-skills.sh --cursor` / `--codex` (file-copy) | — |
+| Any (45+ agents) | `npx skillkit install jorgeferrando/sdd-skills` | SkillKit registry |
+
+---
+
 ## Tier 1: Fundamentos (2026-04-16 → 2026-04-28)
 
 Sin esto, el resto se construye sobre arena.
