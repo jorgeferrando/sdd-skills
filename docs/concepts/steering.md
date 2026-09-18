@@ -153,6 +153,7 @@ No new agents, no new phases — same workflow, more knowledge.
 | **anti-overengineering** | Important | Rules against premature abstractions, unnecessary patterns, speculative design |
 | **performance** | Important | N+1 prevention, pagination, async I/O, lazy loading, indexed queries |
 | **readability** | Important | Descriptive naming, clear structure, guard clauses, no abbreviations |
+| **refactoring** | Important | Names code smells (Bloaters, OO Abusers, Change Preventers, Dispensables, Couplers) and fixes them with the smallest effective change |
 | **security** | Critical | OWASP top 10 — injection, auth, secrets, input validation, access control |
 | **tdd** | Critical | Enforces Red/Green/Refactor cycle, changes task ordering (test before code) |
 | **testing** | Important | Proper test doubles (stub vs mock vs fake), no redundant tests, behavior-focused assertions |

@@ -1,0 +1,5 @@
+name: refactoring
+description: Detects code smells (Bloaters, OO Abusers, Change Preventers, Dispensables, Couplers) and recommends the smallest fix — a refactoring technique or, only when justified, a design pattern. Complements anti-overengineering by owning the "what to fix and how" side of structural quality.
+applies_to: all
+files:
+  - conventions-refactoring.md → openspec/steering/conventions-refactoring.md
