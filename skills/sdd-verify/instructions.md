@@ -26,21 +26,22 @@ produces: []
 ## Step 1: Identify changed files
 
 ```bash
-git diff --name-only main..HEAD    # or dev..HEAD depending on your base branch
+git diff --name-only master..HEAD    # or the base branch this change targets
 ```
+
+Keep this list: Steps 2 and 3 must be scoped to these files, not to the whole project.
 
 ## Step 2: Run tests
 
-Check `openspec/steering/tech.md` for the project's test command. Run the full test suite:
+Check `openspec/steering/tech.md` for the project's test command. Run it **scoped to the files from Step 1**, not the whole suite — a full run costs minutes (in `web`, six ~10 min shards) and the CI already does it after the Step 8 push:
 ```bash
-# Use whatever your project uses:
-pytest
-npm test
-go test ./...
-./gradlew test
+# Use whatever your project uses, narrowed to the changed paths:
+pytest tests/path/to/changed
+npm test -- src/path/to/changed
+go test ./pkg/changed/...
 ```
 
-All tests must pass before proceeding. If no test command is configured in `tech.md` and no test runner is detected, skip this step and note it in the final report as `Tests: SKIPPED (no test runner configured)`.
+All of those tests must pass before proceeding. If no test command is configured in `tech.md` and no test runner is detected, skip this step and note it in the final report as `Tests: SKIPPED (no test runner configured)`.
 
 ## Step 3: Quality checks
 
@@ -54,49 +55,41 @@ golangci-lint run
 
 Fix any issues, re-run, and commit the fix atomically. If no linter is configured in `tech.md` and none is detected in the project, skip this step and note it in the final report as `Quality: SKIPPED (no linter configured)`. Do not install new tools during verify.
 
-## Step 4: Self-review checklist
+## Step 4: Self-review
 
-Review the changed code against these criteria:
+Run the `code-review` skill in its **autorevisión** mode over the branch diff. That skill owns
+the general review: it carries the finding filter, the exact file/line locations, and the
+proposed fix as code. Do not restate its criteria here and do not run a second, parallel
+checklist over the same diff — one review, one set of findings. If no `code-review` skill is
+installed, report the general review as `SKIPPED (no code-review skill)` and continue with the
+three checks below — this skill does not own general code review and will not improvise one.
 
-### 1. Tests exist for new code
-- [ ] New functions/methods have tests
-- [ ] Edge cases are covered
-- [ ] Error paths are tested
+Then check the three items below, which `code-review` cannot check because they are contrasted
+against the SDD artifacts (`tasks.md`, `spec.md`, `design.md`) rather than against the code.
+Items 1 and 3 are **non-negotiable (SDD baseline)** — a violation blocks "READY FOR PR" the same
+as a failing test, regardless of what `conventions.md` says.
 
-### 2. Input validated before processing
-- [ ] Required fields checked
-- [ ] Types/formats validated at system boundaries
-- [ ] No raw user input passed to internal logic unvalidated
+### 1. TDD followed (non-negotiable unless tagged `(no-TDD: ...)` in tasks.md)
+- [ ] Each implementation task in `tasks.md` without a `(no-TDD: ...)` tag has a
+      corresponding test that was written before (or alongside) the implementation
+- [ ] `(no-TDD: ...)` tags, where present, have a genuine reason (config/docs/generated
+      code/spike) — not just "skipped for speed"
+- [ ] No test was retrofitted to match implementation bugs (i.e. tests assert the spec's
+      expected behavior, not merely current output)
 
-### 3. Methods are small and focused
-- [ ] No method > 50 lines
-- [ ] Nesting depth < 3 levels
-- [ ] One responsibility per method
-
-### 4. No hardcoded values
-- [ ] Magic numbers extracted to constants
-- [ ] Status/type strings use enums or constants
-- [ ] No environment-specific values in source code
-
-### 5. No code duplication
-- [ ] Similar logic extracted to shared methods
-- [ ] Consistent patterns with the existing codebase
-
-### 6. Type hints / type safety
-- [ ] All method parameters typed
-- [ ] All return types declared
-- [ ] Nullable types explicit
-
-### 7. Null / None checks
-- [ ] Results checked before use
-- [ ] Optional parameters handled
-- [ ] Exceptions raised for unexpected nulls
-
-### 8. Spec compliance
+### 2. Spec compliance
 - [ ] All spec cases covered
 - [ ] Input/output contracts match
 - [ ] Business rules implemented
 - [ ] Error messages match spec
+
+### 3. YAGNI / KISS (non-negotiable — same ladder as the `ponytail` skill)
+- [ ] No speculative parameters, config knobs, or extension points beyond what
+      `design.md`/`proposal.md` required
+- [ ] No abstraction (interface, factory, generic layer) without a corresponding
+      justification in `design.md`'s Design Decisions table
+- [ ] Simplest implementation that satisfies the acceptance criteria — if a simpler
+      version was rejected, that decision is documented, not silently absent
 
 ## Step 5: Smoke test (for UI/TUI projects)
 
@@ -109,7 +102,7 @@ If a bug is found during smoke test:
 
 ## Step 6: Convention audit (if available)
 
-If `openspec/steering/conventions.md` exists, run `sdd-audit` on the files changed in this branch as an additional quality gate. Include the audit result in the final report.
+If `openspec/steering/conventions.md` exists, run `sdd-audit` on the files changed in this branch, **limited to the rules written in `conventions.md`**. General code quality was already covered by `code-review` in Step 4; this step only answers "does it break a documented project convention". Include the audit result in the final report.
 
 If audit finds critical violations, fix them before proceeding (same flow as Step 3: fix, commit, re-run).
 
@@ -118,10 +111,12 @@ If audit finds critical violations, fix them before proceeding (same flow as Ste
 ```
 VERIFY REPORT: {change-name}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Tests:    N/N PASS
+Tests:    N/N PASS (changed files; full suite runs in CI)
 Quality:  PASS
-Self-review: ✓
+Self-review: N findings, M fixed (code-review, autorevisión)
 Spec compliance: ✓
+TDD baseline: ✓ (or: N exceptions, all tagged with reason)
+YAGNI/KISS baseline: ✓
 Audit:   ✓ (N rules checked, 0 violations)
 
 Status: READY FOR PR
@@ -135,9 +130,12 @@ Create the pull request for the change:
 git push -u origin {branch-name}
 ```
 
-Then create the PR using the project's tooling (e.g. `gh pr create`). Use `proposal.md` context for the PR title and body:
+Then create the PR **as a draft** (`gh pr create --draft`), same as `task-workflow` Paso 7: the
+first push is what proves CI green on the real branch, and it is not up for review until it is.
+Use `proposal.md` context for the PR title and body:
 - **Title:** short summary from the proposal
-- **Body:** Problem, Proposed Solution, and Acceptance Criteria sections from `proposal.md`
+- **Body:** Problem, Proposed Solution, and Acceptance Criteria sections from `proposal.md`.
+  Link any issue tracker ticket as a full URL, never as a bare key.
 
 Show the PR URL to the user for review.
 
