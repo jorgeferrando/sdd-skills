@@ -405,20 +405,26 @@ Final validation before creating a PR.
 /sdd-verify {change-name}
 ```
 
-**Prerequisites:** All tasks in `tasks.md` marked `[x]`
+**Prerequisites:** All tasks in `tasks.md` marked `[x]`, and a `code-review` skill
+installed — Step 4 delegates the general code review to it (see below).
 
 **Checks:**
-1. Full test suite passes
+1. Tests pass, scoped to the files changed in this branch (the full suite is CI's job)
 2. Linter/formatter clean on changed files
-3. Self-review checklist:
-   - Tests exist for new code
-   - Input validation at boundaries
-   - Methods small and focused (< 50 lines)
-   - No hardcoded values
-   - No code duplication
-   - Type hints complete
-   - Spec compliance verified
-4. Smoke test for UI projects
+3. Smoke test for UI projects
+4. Self-review, split in two:
+   - the **general** review is delegated to the `code-review` skill, which owns the finding
+     filter, file/line locations and proposed fixes. One review, one set of findings — this
+     skill does not run a second checklist over the same diff.
+   - three checks `code-review` cannot make, because they are contrasted against the SDD
+     artifacts rather than the code: **TDD followed** (per `tasks.md`), **spec compliance**
+     (per `spec.md`), **YAGNI/KISS** (per `design.md`). TDD and YAGNI/KISS are baseline:
+     a violation blocks `READY FOR PR` like a failing test.
+
+> **Dependency:** Step 4 expects a `code-review` skill to be available. This repo does not
+> ship one — it deliberately does not own general code review. Without it, `/sdd-verify`
+> still runs steps 1-3 and the three SDD-artifact checks, and reports the general review as
+> skipped.
 
 **Output:** VERIFY REPORT with status READY FOR PR or list of issues to fix.
 
